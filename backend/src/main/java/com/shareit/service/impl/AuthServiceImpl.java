@@ -1,9 +1,9 @@
 package com.shareit.service.impl;
 
-import com.shareit.dto.LoginRequest;
-import com.shareit.dto.GenericResponse;
-import com.shareit.dto.SignupRequest;
-import com.shareit.dto.AuthResponse;
+import com.shareit.dto.request.LoginRequest;
+import com.shareit.dto.response.GenericResponse;
+import com.shareit.dto.request.SignupRequest;
+import com.shareit.dto.response.AuthResponse;
 import com.shareit.entities.User;
 import com.shareit.service.AuthService;
 import com.shareit.service.RefreshTokenService;

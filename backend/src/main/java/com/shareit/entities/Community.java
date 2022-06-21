@@ -25,7 +25,7 @@ public class Community {
     @Column( name = "description" )
     private String communityDescription;
 
-    @OneToMany(mappedBy = "community")
+    @OneToMany(mappedBy = "community", orphanRemoval = true)
     private List<UserCommunity> communityOfUsers;
 
     @OneToMany(mappedBy = "community",orphanRemoval = true)

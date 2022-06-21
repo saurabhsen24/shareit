@@ -40,6 +40,7 @@ public class JwtAuthenticationConfig {
             KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
             InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(keyStorePath);
             keyStore.load(resourceAsStream, keyStorePassword.toCharArray());
+            return keyStore;
         }catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException e) {
             log.error("Unable to load keystore: {}", keyStorePath, e);
         }

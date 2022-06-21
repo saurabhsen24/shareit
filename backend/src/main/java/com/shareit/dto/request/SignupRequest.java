@@ -1,4 +1,4 @@
-package com.shareit.dto;
+package com.shareit.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
