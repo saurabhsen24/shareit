@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,8 +24,15 @@ public class Community {
     @GeneratedValue
     private UUID communityId;
 
+    @Column( name = "community_name", unique = true )
+    private String communityName;
+
     @Column( name = "description" )
     private String communityDescription;
+
+    @Column( name = "created_on" )
+    @CreationTimestamp
+    private Timestamp createdOn;
 
     @OneToMany(mappedBy = "community", orphanRemoval = true)
     private List<UserCommunity> communityOfUsers;
