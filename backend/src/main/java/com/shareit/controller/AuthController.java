@@ -1,8 +1,9 @@
 package com.shareit.controller;
 
-import com.shareit.dto.AuthResponse;
-import com.shareit.dto.LoginRequest;
-import com.shareit.dto.SignupRequest;
+import com.shareit.dto.response.AuthResponse;
+import com.shareit.dto.response.GenericResponse;
+import com.shareit.dto.request.LoginRequest;
+import com.shareit.dto.request.SignupRequest;
 import com.shareit.service.AuthService;
 import com.shareit.utils.JwtHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> signUpUser(@Valid @RequestBody SignupRequest signupRequest) {
-        return new ResponseEntity<>(authService.signupUser(signupRequest),HttpStatus.OK);
+    public ResponseEntity<GenericResponse> signUpUser(@Valid @RequestBody SignupRequest signupRequest) {
+        return new ResponseEntity<GenericResponse>(authService.signupUser(signupRequest),HttpStatus.OK);
     }
 }

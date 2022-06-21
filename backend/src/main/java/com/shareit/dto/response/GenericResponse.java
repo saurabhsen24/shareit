@@ -1,4 +1,4 @@
-package com.shareit.dto;
+package com.shareit.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

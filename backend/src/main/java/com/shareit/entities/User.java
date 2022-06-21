@@ -32,6 +32,9 @@ public class User {
     @Column( name = "email" )
     private String email;
 
+    @Column( name = "profile_pic" )
+    private String profilePicUrl;
+
     @Column( name = "created_on" , nullable = false)
     @CreationTimestamp
     private Timestamp userCreatedOn;
