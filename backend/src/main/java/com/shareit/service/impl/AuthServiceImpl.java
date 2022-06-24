@@ -10,6 +10,7 @@ import com.shareit.service.RefreshTokenService;
 import com.shareit.service.UserService;
 import com.shareit.utils.Constants;
 import com.shareit.utils.JwtHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +24,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class AuthServiceImpl implements AuthService {
 
     @Autowired
@@ -67,6 +69,8 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public GenericResponse signupUser(SignupRequest signupRequest) {
 
+        log.info("Signup request initiated for user {}", signupRequest.getUsername());
+
         User user = User.builder()
                 .userName(signupRequest.getUsername())
                 .password(passwordEncoder.encode(signupRequest.getPassword()))
@@ -74,6 +78,9 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         userService.saveUser(user);
+
+        log.info("Signup successful for user {}", signupRequest.getUsername());
+
         return GenericResponse.builder()
                 .message("User successfully signed up!")
                 .build();

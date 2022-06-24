@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table( name = "community" )
@@ -19,8 +18,8 @@ import java.util.UUID;
 public class Community {
 
     @Id
-    @GeneratedValue
-    private UUID communityId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long communityId;
 
     @Column( name = "description" )
     private String communityDescription;

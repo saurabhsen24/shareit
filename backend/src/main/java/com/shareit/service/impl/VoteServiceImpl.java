@@ -29,7 +29,7 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
-    public Integer getAllVotesOnPost(String postId, VoteType voteType) {
+    public Integer getAllVotesOnPost(Long postId, VoteType voteType) {
         return voteRepository.getAllVotes(postId, voteType);
     }
 }

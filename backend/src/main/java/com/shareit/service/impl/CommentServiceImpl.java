@@ -17,13 +17,13 @@ public class CommentServiceImpl implements CommentService {
     private CommentRepository commentRepository;
 
     @Override
-    public List<Comment> getAllCommentsOnPost(String postId) {
+    public List<Comment> getAllCommentsOnPost(Long postId) {
         return null;
     }
 
     @Override
-    public Comment getComment(String commentId) {
-        return commentRepository.findById(UUID.fromString(commentId)).orElseThrow(() -> new NotFoundException("Comment not found!"));
+    public Comment getComment(Long commentId) {
+        return commentRepository.findById(commentId).orElseThrow(() -> new NotFoundException("Comment not found!"));
     }
 
     @Override

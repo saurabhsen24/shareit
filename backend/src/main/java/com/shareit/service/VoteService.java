@@ -11,5 +11,5 @@ public interface VoteService {
 
     void delete(Vote vote);
 
-    Integer getAllVotesOnPost(String postId,VoteType voteType);
+    Integer getAllVotesOnPost(Long postId,VoteType voteType);
 }

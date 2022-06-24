@@ -6,7 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.UUID;
 
 @Entity
 @Table( name = "comment" )
@@ -15,8 +14,8 @@ import java.util.UUID;
 public class Comment {
 
     @Id
-    @GeneratedValue
-    private UUID commentId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long commentId;
 
     @Column( name = "text" ,nullable = false)
     private String text;

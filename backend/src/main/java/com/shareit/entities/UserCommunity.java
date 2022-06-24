@@ -3,7 +3,6 @@ package com.shareit.entities;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Table(name = "user_community")
@@ -11,8 +10,8 @@ import java.util.UUID;
 public class UserCommunity {
 
     @Id
-    @GeneratedValue
-    private UUID userCommunityId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long userCommunityId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
