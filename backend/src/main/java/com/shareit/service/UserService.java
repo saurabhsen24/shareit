@@ -8,6 +8,8 @@ public interface UserService {
 
     User getUserByUsername(String userName);
 
+    Boolean checkIfUserExistsByUsernameOrEmail(String userName,String email);
+
     void saveUser(User user);
 
     User getUserById(Long userId);

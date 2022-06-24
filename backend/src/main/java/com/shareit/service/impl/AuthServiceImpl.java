@@ -1,10 +1,11 @@
 package com.shareit.service.impl;
 
 import com.shareit.dto.request.LoginRequest;
-import com.shareit.dto.response.GenericResponse;
 import com.shareit.dto.request.SignupRequest;
 import com.shareit.dto.response.AuthResponse;
+import com.shareit.dto.response.GenericResponse;
 import com.shareit.entities.User;
+import com.shareit.exception.BadRequestException;
 import com.shareit.service.AuthService;
 import com.shareit.service.RefreshTokenService;
 import com.shareit.service.UserService;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -70,6 +72,10 @@ public class AuthServiceImpl implements AuthService {
     public GenericResponse signupUser(SignupRequest signupRequest) {
 
         log.info("Signup request initiated for user {}", signupRequest.getUsername());
+
+        if(userService.checkIfUserExistsByUsernameOrEmail(signupRequest.getUsername(), signupRequest.getEmail())) {
+            throw new BadRequestException("Username/Email already exists");
+        }
 
         User user = User.builder()
                 .userName(signupRequest.getUsername())

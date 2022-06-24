@@ -4,7 +4,7 @@ import com.shareit.entities.Role;
 import com.shareit.entities.User;
 import com.shareit.enums.RoleType;
 import com.shareit.exception.BadRequestException;
-import com.shareit.exception.NotFoundException;
+import com.shareit.exception.ResourceNotFoundException;
 import com.shareit.repository.UserRepository;
 import com.shareit.service.RoleService;
 import com.shareit.service.UserService;
@@ -29,6 +29,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean checkIfUserExistsByUsernameOrEmail(String userName, String email) {
+        return userRepository.existsByUserNameOrEmail(userName, email);
+    }
+
+    @Override
     public void saveUser(User user) {
 
         log.info("Saving the user {} in db", user.getUserName());
@@ -42,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User Not Found!"));
+        return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User Not Found!"));
     }
 
     @Override

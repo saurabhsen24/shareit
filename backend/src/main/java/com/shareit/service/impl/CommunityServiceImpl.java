@@ -2,7 +2,7 @@ package com.shareit.service.impl;
 
 import com.shareit.dto.projection.CommunityUserProjection;
 import com.shareit.entities.Community;
-import com.shareit.exception.NotFoundException;
+import com.shareit.exception.ResourceNotFoundException;
 import com.shareit.repository.CommunityRepository;
 import com.shareit.service.CommunityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class CommunityServiceImpl implements CommunityService {
 
     @Override
     public Community getCommunity(Long communityId) {
-        return communityRepository.findById(communityId).orElseThrow(() -> new NotFoundException("Community Not Found!"));
+        return communityRepository.findById(communityId).orElseThrow(() -> new ResourceNotFoundException("Community Not Found!"));
     }
 
     @Override
