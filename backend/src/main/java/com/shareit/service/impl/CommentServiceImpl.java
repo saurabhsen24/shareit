@@ -1,14 +1,13 @@
 package com.shareit.service.impl;
 
 import com.shareit.entities.Comment;
-import com.shareit.exception.NotFoundException;
+import com.shareit.exception.ResourceNotFoundException;
 import com.shareit.repository.CommentRepository;
 import com.shareit.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -17,13 +16,13 @@ public class CommentServiceImpl implements CommentService {
     private CommentRepository commentRepository;
 
     @Override
-    public List<Comment> getAllCommentsOnPost(String postId) {
+    public List<Comment> getAllCommentsOnPost(Long postId) {
         return null;
     }
 
     @Override
-    public Comment getComment(String commentId) {
-        return commentRepository.findById(UUID.fromString(commentId)).orElseThrow(() -> new NotFoundException("Comment not found!"));
+    public Comment getComment(Long commentId) {
+        return commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comment not found!"));
     }
 
     @Override

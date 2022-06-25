@@ -7,12 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.UUID;
-
 @Repository
-public interface VoteRepository extends JpaRepository<Vote, UUID> {
+public interface VoteRepository extends JpaRepository<Vote, Long> {
 
     @Query(value = "SELECT SUM(vote_type) FROM vote where post_id=:postId and vote_type=:voteType",nativeQuery = true)
-    Integer getAllVotes(@Param("postId") String postId, @Param("voteType") VoteType voteType);
+    Integer getAllVotes(@Param("postId") Long postId, @Param("voteType") VoteType voteType);
 }

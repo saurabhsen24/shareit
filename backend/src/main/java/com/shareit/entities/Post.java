@@ -11,7 +11,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table( name = "posts" )
@@ -22,8 +21,8 @@ import java.util.UUID;
 public class Post {
 
     @Id
-    @GeneratedValue
-    private UUID postId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long postId;
 
     @Column( name = "post_name", nullable = false )
     private String postName;

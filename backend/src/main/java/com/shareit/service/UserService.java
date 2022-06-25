@@ -8,11 +8,13 @@ public interface UserService {
 
     User getUserByUsername(String userName);
 
+    Boolean checkIfUserExistsByUsernameOrEmail(String userName,String email);
+
     void saveUser(User user);
 
-    User getUserById(String userId);
+    User getUserById(Long userId);
 
     User updateUser(User user);
 
-    void deleteUser(String userId);
+    void deleteUser(Long userId);
 }

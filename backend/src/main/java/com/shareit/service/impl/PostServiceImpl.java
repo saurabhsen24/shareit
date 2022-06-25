@@ -1,14 +1,13 @@
 package com.shareit.service.impl;
 
 import com.shareit.entities.Post;
-import com.shareit.exception.NotFoundException;
+import com.shareit.exception.ResourceNotFoundException;
 import com.shareit.repository.PostRepository;
 import com.shareit.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -22,8 +21,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post getPostById(String postId) {
-        return postRepository.findById(UUID.fromString(postId)).orElseThrow(() -> new NotFoundException("Post not found!"));
+    public Post getPostById(Long postId) {
+        return postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post not found!"));
     }
 
     @Override

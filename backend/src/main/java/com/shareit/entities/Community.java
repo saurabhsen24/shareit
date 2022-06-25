@@ -10,7 +10,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table( name = "community" )
@@ -21,8 +20,8 @@ import java.util.UUID;
 public class Community {
 
     @Id
-    @GeneratedValue
-    private UUID communityId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long communityId;
 
     @Column( name = "community_name", unique = true )
     private String communityName;

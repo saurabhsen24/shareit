@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table( name = "role" )
@@ -17,8 +16,8 @@ import java.util.UUID;
 public class Role {
 
     @Id
-    @GeneratedValue
-    private UUID roleId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long roleId;
 
     @Column( name = "name" )
     @Enumerated(EnumType.STRING)

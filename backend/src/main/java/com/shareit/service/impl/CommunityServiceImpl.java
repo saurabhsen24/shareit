@@ -2,15 +2,13 @@ package com.shareit.service.impl;
 
 import com.shareit.dto.projection.CommunityUserProjection;
 import com.shareit.entities.Community;
-import com.shareit.entities.User;
-import com.shareit.exception.NotFoundException;
+import com.shareit.exception.ResourceNotFoundException;
 import com.shareit.repository.CommunityRepository;
 import com.shareit.service.CommunityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class CommunityServiceImpl implements CommunityService {
@@ -24,8 +22,8 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
-    public Community getCommunity(String communityId) {
-        return communityRepository.findById(UUID.fromString(communityId)).orElseThrow(() -> new NotFoundException("Community Not Found!"));
+    public Community getCommunity(Long communityId) {
+        return communityRepository.findById(communityId).orElseThrow(() -> new ResourceNotFoundException("Community Not Found!"));
     }
 
     @Override
@@ -39,7 +37,7 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
-    public List<CommunityUserProjection> getUsersFromCommunity(String communityId) {
+    public List<CommunityUserProjection> getUsersFromCommunity(Long communityId) {
         return communityRepository.getAllUsersFromCommunity(communityId);
     }
 }

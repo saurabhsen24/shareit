@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Table( name = "vote" )
@@ -18,8 +17,8 @@ import java.util.UUID;
 public class Vote {
 
     @Id
-    @GeneratedValue
-    private UUID voteId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long voteId;
 
     @Enumerated
     @Column( name = "vote_type" )
