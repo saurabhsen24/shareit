@@ -2,6 +2,7 @@ package com.shareit.exception;
 
 import com.shareit.dto.ErrorMessage;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -30,6 +31,19 @@ public class RestApiExceptionHandler {
     public ErrorMessage handleBadRequest(BadRequestException ex, WebRequest webRequest) {
         ErrorMessage errorMessage = ErrorMessage.builder()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
+                .message(ex.getMessage())
+                .description(webRequest.getDescription(false))
+                .timestamp(new Date())
+                .build();
+
+        return errorMessage;
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
+    public ErrorMessage handleAccessDenied(AccessDeniedException ex, WebRequest webRequest) {
+        ErrorMessage errorMessage = ErrorMessage.builder()
+                .statusCode(HttpStatus.FORBIDDEN.value())
                 .message(ex.getMessage())
                 .description(webRequest.getDescription(false))
                 .timestamp(new Date())

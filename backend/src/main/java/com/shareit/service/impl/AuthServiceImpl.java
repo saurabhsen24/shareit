@@ -56,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
                         .getRoles().stream().map(role -> role.getRoleType().toString())
                 .collect(Collectors.joining(","));
 
-        claims.put(Constants.CLAIMS_AUTHORITIES, authorities);
+        claims.put(Constants.AUTHORITIES_CLAIM_NAME, authorities);
 
         String jwt = jwtHelper.createJwtForClaims(Constants.CLAIMS_USERNAME, claims);
 
