@@ -4,5 +4,6 @@ public interface Constants {
 
     String AUTHORITIES_CLAIM_NAME = "roles";
     String CLAIMS_USERNAME = "username";
-    String MINUTES = "minutes";
+    String MINUTES = " minutes";
+    String MONTH = " months";
 }

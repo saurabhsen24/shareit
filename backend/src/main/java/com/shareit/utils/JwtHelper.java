@@ -29,7 +29,7 @@ public class JwtHelper {
     public String createJwtForClaims(String subject, Map<String,String> claims){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Instant.now().toEpochMilli());
-        calendar.add(Calendar.MINUTE, jwtExpirationAmount);
+        calendar.add(Calendar.MONTH, jwtExpirationAmount);
 
         JWTCreator.Builder jwtBuilder = JWT.create().withSubject(subject);
         claims.forEach(jwtBuilder::withClaim);
@@ -42,6 +42,6 @@ public class JwtHelper {
     }
 
     public String getTokenExpirationTime() {
-        return jwtExpirationAmount + Constants.MINUTES;
+        return jwtExpirationAmount + Constants.MONTH;
     }
 }
