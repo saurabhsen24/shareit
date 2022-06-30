@@ -1,9 +1,9 @@
 package com.shareit.controller;
 
-import com.shareit.dto.response.AuthResponse;
-import com.shareit.dto.response.GenericResponse;
 import com.shareit.dto.request.LoginRequest;
 import com.shareit.dto.request.SignupRequest;
+import com.shareit.dto.response.AuthResponse;
+import com.shareit.dto.response.GenericResponse;
 import com.shareit.service.AuthService;
 import com.shareit.utils.JwtHelper;
 import io.swagger.annotations.ApiOperation;
@@ -32,7 +32,7 @@ public class AuthController {
     @ApiOperation(value = "Login user", response = AuthResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code=200,message = "Login Successful"),
-            @ApiResponse(code = 401, message = "You are not authorized")
+            @ApiResponse(code = 401, message = "You are not authenticated")
     })
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> loginUser(@Valid @RequestBody LoginRequest loginRequest){
@@ -43,7 +43,7 @@ public class AuthController {
     @ApiOperation(value = "Signup User", response = GenericResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Signup Successful"),
-            @ApiResponse(code = 200, message = "You are not authorized")
+            @ApiResponse(code = 401, message = "You are not authenticated")
     })
     @PostMapping("/signup")
     public ResponseEntity<GenericResponse> signUpUser(@Valid @RequestBody SignupRequest signupRequest) {
