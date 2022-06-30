@@ -1,5 +1,6 @@
 package com.shareit.service.impl;
 
+import com.shareit.dto.UserDto;
 import com.shareit.entities.Role;
 import com.shareit.entities.User;
 import com.shareit.enums.RoleType;
@@ -51,8 +52,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User user) {
-        return userRepository.save(user);
+    public UserDto updateUser(UserDto userDto) {
+        User user = userRepository.findByUserName(userDto.getUserName()).orElseThrow(() -> new ResourceNotFoundException("User not found!"));
+        user.setUserName(userDto.getUserName());
+        user.setEmail(userDto.getEmail());
+        user.setProfilePicUrl(userDto.getProfilePic());
+
+        userRepository.save(user);
+
+        return userDto;
     }
 
     @Override
