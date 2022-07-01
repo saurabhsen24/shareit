@@ -1,9 +1,7 @@
 package com.shareit.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.shareit.dto.PostDto;
-import com.shareit.dto.response.PostResponseDto;
-import javafx.geometry.Pos;
+import com.shareit.dto.request.PostRequestDto;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -25,8 +23,8 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
-    @Column( name = "post_name", nullable = false )
-    private String postName;
+    @Column( name = "post_title", nullable = false )
+    private String postTitle;
 
     @Lob
     @Column( name = "post_desc" )

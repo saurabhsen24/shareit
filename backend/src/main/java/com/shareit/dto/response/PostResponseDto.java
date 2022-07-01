@@ -16,8 +16,8 @@ public class PostResponseDto extends PostDto {
     private Integer voteCount;
 
     @Builder
-    public PostResponseDto(String postName, String postDescription, Long postId, Integer voteCount) {
-        super(postName,postDescription);
+    public PostResponseDto(Long postId ,String postTitle, String postDescription, Integer voteCount) {
+        super(postTitle,postDescription);
         this.postId = postId;
         this.voteCount = voteCount;
     }
@@ -25,7 +25,7 @@ public class PostResponseDto extends PostDto {
     public static PostResponseDto from(Post post) {
         return PostResponseDto.builder()
                 .postId(post.getPostId())
-                .postName(post.getPostName())
+                .postTitle(post.getPostTitle())
                 .postDescription(post.getPostDescription())
                 .voteCount(post.getVoteCount())
                 .build();

@@ -11,8 +11,8 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class PostDto {
 
-    @NotBlank(message = "Post Name cannot be empty")
-    private String postName;
+    @NotBlank(message = "Post Title cannot be empty")
+    private String postTitle;
 
     @NotBlank(message = "Post Description should be present")
     private String postDescription;
