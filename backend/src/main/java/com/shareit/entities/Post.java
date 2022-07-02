@@ -57,7 +57,7 @@ public class Post {
     private List<Vote> votes;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "community_id", nullable = false )
+    @JoinColumn(name = "community_id")
     private Community community;
 
     public void addComment(Comment comment) {

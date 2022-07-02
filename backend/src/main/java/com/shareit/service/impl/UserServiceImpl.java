@@ -10,6 +10,7 @@ import com.shareit.repository.UserRepository;
 import com.shareit.service.RoleService;
 import com.shareit.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,6 +66,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long userId) {
+        if(BooleanUtils.isFalse(userRepository.existsById(userId))) {
+            throw new ResourceNotFoundException("User not found");
+        }
+
         userRepository.deleteById(userId);
     }
 

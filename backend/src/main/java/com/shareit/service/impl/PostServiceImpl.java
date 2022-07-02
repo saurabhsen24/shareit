@@ -8,7 +8,10 @@ import com.shareit.exception.ResourceNotFoundException;
 import com.shareit.repository.PostRepository;
 import com.shareit.service.PostService;
 import com.shareit.service.UserService;
+import com.shareit.utils.JwtHelper;
+import com.shareit.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -17,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,16 +38,16 @@ public class PostServiceImpl implements PostService {
 
         log.debug("Creating post {}", postRequestDto.getPostTitle());
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userName = ((UserDetails) authentication.getPrincipal()).getUsername();
+        String loggedInUsername = JwtHelper.getCurrentLoggedInUsername();
 
-        User user = userService.getUserByUsername(userName);
+        User user = userService.getUserByUsername(loggedInUsername);
 
         Post post = Post.builder()
                 .postTitle(postRequestDto.getPostTitle())
                 .postDescription(postRequestDto.getPostDescription())
                 .postUrl(postRequestDto.getPostUrl())
                 .user(user)
+                .voteCount(0)
                 .build();
 
         log.debug("Post {} saved successfully", post.getPostTitle());
@@ -64,7 +68,13 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deletePost(Long postId) {
+
+        if(BooleanUtils.isFalse(postRepository.existsById(postId))){
+            throw new ResourceNotFoundException("Post Not Found");
+        }
+
         postRepository.deleteById(postId);
+        
     }
 
     @Override
