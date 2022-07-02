@@ -51,7 +51,7 @@ public class User {
     )
     private List<Role> roles;
 
-    @OneToMany( mappedBy = "user" )
+    @OneToMany( mappedBy = "user", cascade = CascadeType.REMOVE )
     private List<Post> posts;
 
     @OneToMany( mappedBy = "user" )

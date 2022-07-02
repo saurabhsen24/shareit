@@ -1,16 +1,20 @@
 package com.shareit.service;
 
+import com.shareit.dto.request.PostRequestDto;
+import com.shareit.dto.response.PostResponseDto;
 import com.shareit.entities.Post;
 
 import java.util.List;
 
 public interface PostService {
 
-    List<Post> getAllPosts();
+    void createPost(PostRequestDto postRequestDto);
 
-    Post getPostById( Long postId );
+    List<PostResponseDto> getAllPosts();
 
-    void deletePost( Post post );
+    PostResponseDto getPostById( Long postId );
 
-    void updatePost( Post post );
+    void deletePost( Long postId );
+
+    void updatePost( Long postId , PostRequestDto postRequestDto );
 }
