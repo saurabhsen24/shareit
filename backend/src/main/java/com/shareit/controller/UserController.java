@@ -29,7 +29,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<GenericResponse> removeUser(@PathVariable("userId") Long userId){
         userService.deleteUser(userId);
-        return new ResponseEntity<>(new GenericResponse("User Deleted Successfully"), HttpStatus.OK);
+        return new ResponseEntity<>(GenericResponse.buildGenericResponse("User Deleted Successfully"), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Updates User")
