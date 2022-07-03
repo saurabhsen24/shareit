@@ -1,7 +1,6 @@
 package com.shareit.entities;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -10,7 +9,10 @@ import java.sql.Timestamp;
 @Entity
 @Table( name = "comment" )
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
+@Builder
 public class Comment {
 
     @Id

@@ -39,9 +39,9 @@ public class RestApiExceptionHandler {
         return errorMessage;
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
+    @ExceptionHandler({AccessDeniedException.class, ForbiddenResourceException.class})
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
-    public ErrorMessage handleAccessDenied(AccessDeniedException ex, WebRequest webRequest) {
+    public ErrorMessage handleAccessDenied(Exception ex, WebRequest webRequest) {
         ErrorMessage errorMessage = ErrorMessage.builder()
                 .statusCode(HttpStatus.FORBIDDEN.value())
                 .message(ex.getMessage())

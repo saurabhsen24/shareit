@@ -62,7 +62,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponseDto getPostById(Long postId) {
-        Post post = getPost(postId);
+        Post post = findPostByPostId(postId);
         return PostResponseDto.from(post);
     }
 
@@ -81,7 +81,7 @@ public class PostServiceImpl implements PostService {
     public void updatePost(Long postId, PostRequestDto postRequestDto) {
         log.info("Updating post {}", postId);
 
-        Post updatedPost = getPost(postId);
+        Post updatedPost = findPostByPostId(postId);
 
         if (StringUtils.isNotBlank(postRequestDto.getPostTitle())) {
             updatedPost.setPostTitle(postRequestDto.getPostTitle());
@@ -99,7 +99,8 @@ public class PostServiceImpl implements PostService {
         postRepository.save(updatedPost);
     }
 
-    private Post getPost(Long postId) {
+    public Post findPostByPostId(Long postId) {
         return postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post not found!"));
     }
+
 }
