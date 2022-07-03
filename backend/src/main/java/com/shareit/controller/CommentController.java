@@ -55,7 +55,8 @@ public class CommentController {
     @ApiOperation(value = "Updates comment on post", response = CommentResponseDto.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Updates comment on post"),
-            @ApiResponse(code = 401, message = "You are not authenticated")
+            @ApiResponse(code = 401, message = "You are not authenticated"),
+            @ApiResponse(code = 403, message = "You are not authorized")
     })
     @PatchMapping("/{postId}/editComment/{commentId}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
@@ -68,7 +69,8 @@ public class CommentController {
     @ApiOperation(value = "Deletes comment on post")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Deleted Successfully"),
-            @ApiResponse(code = 401, message = "You are not authenticated")
+            @ApiResponse(code = 401, message = "You are not authenticated"),
+            @ApiResponse(code = 403, message = "You are not authorized")
     })
     @DeleteMapping("/{postId}/deleteComment/{commentId}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
