@@ -4,6 +4,7 @@ import com.shareit.dto.request.PostRequestDto;
 import com.shareit.dto.response.PostResponseDto;
 import com.shareit.entities.Post;
 import com.shareit.entities.User;
+import com.shareit.enums.VoteType;
 import com.shareit.exception.ResourceNotFoundException;
 import com.shareit.repository.PostRepository;
 import com.shareit.service.PostService;
@@ -101,6 +102,28 @@ public class PostServiceImpl implements PostService {
 
     public Post findPostByPostId(Long postId) {
         return postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post not found!"));
+    }
+
+    @Override
+    public Integer updateVoteCount(Post post, VoteType voteType) {
+        log.info("Updating the vote {} of Post {}", voteType.name(), post.getPostId());
+
+        switch (voteType) {
+            case UP_VOTE:
+                post.setVoteCount(post.getVoteCount() + 1);
+                break;
+            case DOWN_VOTE:
+                post.setVoteCount(post.getVoteCount() - 1);
+                break;
+            default:
+                return post.getVoteCount();
+        }
+
+        post = postRepository.save(post);
+
+        log.info("Post vote count updated {}", post.getVoteCount());
+
+        return post.getVoteCount();
     }
 
 }
