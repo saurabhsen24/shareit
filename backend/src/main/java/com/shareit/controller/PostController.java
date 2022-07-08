@@ -77,7 +77,8 @@ public class PostController {
     @ApiOperation(value = "Deleted post", response = GenericResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Post Deleted"),
-            @ApiResponse(code = 401, message = "You are not authenticated")
+            @ApiResponse(code = 401, message = "You are not authenticated"),
+            @ApiResponse(code = 403, message = "You are not authorized")
     })
     @DeleteMapping("/{postId}")
     @PreAuthorize("hasRole('ROLE_USER')")

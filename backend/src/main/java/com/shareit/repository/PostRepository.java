@@ -4,6 +4,7 @@ import com.shareit.dto.projection.PostProjection;
 import com.shareit.entities.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,4 +19,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "FROM posts p INNER JOIN user u ON" +
             " p.user_id = u.user_id",nativeQuery = true)
     List<PostProjection> findAllPosts();
+
+    @Query(value = "SELECT u.user_name FROM posts p INNER JOIN user u ON p.user_id = u.user_id WHERE p.post_id=:postId",
+            nativeQuery = true)
+    String findPostCreator(@Param("postId") Long postId);
 }

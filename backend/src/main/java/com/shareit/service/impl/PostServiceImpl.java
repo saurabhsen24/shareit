@@ -5,6 +5,7 @@ import com.shareit.dto.response.PostResponseDto;
 import com.shareit.entities.Post;
 import com.shareit.entities.User;
 import com.shareit.enums.VoteType;
+import com.shareit.exception.ForbiddenResourceException;
 import com.shareit.exception.ResourceNotFoundException;
 import com.shareit.repository.PostRepository;
 import com.shareit.service.PostService;
@@ -71,12 +72,19 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deletePost(Long postId) {
 
-        if(BooleanUtils.isFalse(postRepository.existsById(postId))){
+        if(BooleanUtils.isFalse(postRepository.existsById(postId))) {
             throw new ResourceNotFoundException("Post Not Found");
         }
 
+        String postOwner = postRepository.findPostCreator(postId);
+        String loggedInUser = JwtHelper.getCurrentLoggedInUsername();
+
+        if(BooleanUtils.isFalse(postOwner.equals(loggedInUser))) {
+            throw new ForbiddenResourceException("You can't delete this post");
+        }
+
         postRepository.deleteById(postId);
-        
+
     }
 
     @Override
@@ -84,6 +92,13 @@ public class PostServiceImpl implements PostService {
         log.info("Updating post {}", postId);
 
         Post updatedPost = findPostByPostId(postId);
+
+        String postOwner = postRepository.findPostCreator(postId);
+        String loggedInUser = JwtHelper.getCurrentLoggedInUsername();
+
+        if(BooleanUtils.isFalse(postOwner.equals(loggedInUser))) {
+            throw new ForbiddenResourceException("You can't update this post");
+        }
 
         if (StringUtils.isNotBlank(postRequestDto.getPostTitle())) {
             updatedPost.setPostTitle(postRequestDto.getPostTitle());
@@ -126,5 +141,4 @@ public class PostServiceImpl implements PostService {
 
         return post.getVoteCount();
     }
-
 }
