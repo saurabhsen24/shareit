@@ -1,6 +1,7 @@
 package com.shareit.config;
 
 import com.shareit.security.CustomOAuth2AuthenticationEntryPoint;
+import com.shareit.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -72,7 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     }
                 }).and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers("/auth/**")
+                        .antMatchers(Constants.PUBLIC_URLS)
                         .permitAll()
                         .anyRequest()
                         .authenticated()

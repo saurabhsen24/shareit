@@ -31,7 +31,7 @@ public class PostController {
             @ApiResponse(code = 401, message = "You are not authenticated")
     })
     @PostMapping("/createPost")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<GenericResponse> addPost(@RequestBody @Valid PostRequestDto postRequestDto) {
         log.debug("Received post creation request {}", postRequestDto.getPostTitle());
         postService.createPost(postRequestDto);
@@ -44,7 +44,6 @@ public class PostController {
             @ApiResponse(code = 401, message = "You are not authenticated")
     })
     @GetMapping("/posts")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<List<PostResponseDto>> getAllPosts() {
         log.debug("Received request to show all posts");
         return new ResponseEntity<>(postService.getAllPosts(), HttpStatus.OK);
@@ -56,7 +55,6 @@ public class PostController {
             @ApiResponse(code = 401, message = "You are not authenticated")
     })
     @GetMapping("/{postId}")
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<PostResponseDto> getPost(@PathVariable("postId") Long postId){
         log.debug("Received post get request {}", postId);
         return new ResponseEntity<>(postService.getPostById(postId), HttpStatus.OK);
@@ -69,7 +67,7 @@ public class PostController {
             @ApiResponse(code = 403, message = "Forbidden resource")
     })
     @PutMapping("/updatePost/{postId}")
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<GenericResponse> updatePost(@PathVariable("postId") Long postId,@RequestBody @Valid PostRequestDto postRequestDto){
         log.debug("Received request to update post {}", postId);
         postService.updatePost(postId, postRequestDto);
@@ -79,10 +77,11 @@ public class PostController {
     @ApiOperation(value = "Deleted post", response = GenericResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Post Deleted"),
-            @ApiResponse(code = 401, message = "You are not authenticated")
+            @ApiResponse(code = 401, message = "You are not authenticated"),
+            @ApiResponse(code = 403, message = "You are not authorized")
     })
     @DeleteMapping("/{postId}")
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<GenericResponse> deletePost(@PathVariable("postId") Long postId){
         log.debug("Received request to delete post {}", postId);
         postService.deletePost(postId);

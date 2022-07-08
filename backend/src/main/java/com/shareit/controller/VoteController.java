@@ -28,7 +28,7 @@ public class VoteController {
             @ApiResponse(code = 400, message = "Bad Request")
     })
     @PostMapping("/{postId}/createVote/{userId}")
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<VoteResponseDto> createVote(@PathVariable("postId") Long postId, @PathVariable("userId") Long userId,
                                         @RequestBody @Valid VoteRequestDto voteRequestDto){
         return new ResponseEntity<>(voteService.createVote(postId, userId, voteRequestDto), HttpStatus.CREATED);
@@ -41,7 +41,7 @@ public class VoteController {
             @ApiResponse(code = 401, message = "You are not authenticated")
     })
     @PatchMapping("/{postId}/updateVote/{userId}")
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<VoteResponseDto> updateVote(@PathVariable("postId") Long postId, @PathVariable("userId") Long userId,
                                         @RequestBody @Valid VoteRequestDto voteRequestDto ) {
         return new ResponseEntity<>(voteService.updateVote(postId, userId, voteRequestDto), HttpStatus.OK);

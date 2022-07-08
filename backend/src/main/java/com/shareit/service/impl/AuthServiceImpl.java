@@ -65,6 +65,7 @@ public class AuthServiceImpl implements AuthService {
                 .accessToken(jwt)
                 .refreshToken(refreshTokenService.getRefreshToken(loginRequest.getUsername()))
                 .expiresAt(jwtHelper.getTokenExpirationTime())
+                .role(authorities)
                 .build();
     }
 
