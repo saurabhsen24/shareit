@@ -58,7 +58,8 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<PostResponseDto> getAllPosts() {
         log.debug("Getting all the posts from db");
-        return postRepository.findAll().stream().map(post -> PostResponseDto.from(post)).collect(Collectors.toList());
+        return postRepository.findAllPosts().stream().map(postProjection -> PostResponseDto.from(postProjection))
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -31,7 +31,7 @@ public class CommentController {
             @ApiResponse(code = 401, message = "You are not authenticated")
     })
     @PostMapping("/{postId}/createComment")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<GenericResponse> createComment(@PathVariable("postId") Long postId,
                                                          @RequestBody @Valid CommentRequestDto commentRequestDto) {
         log.debug("Received request to create comment on post {}", postId);
@@ -46,7 +46,7 @@ public class CommentController {
             @ApiResponse(code = 401, message = "You are not authenticated")
     })
     @GetMapping("/{postId}/comments")
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<List<CommentResponseDto>> getAllCommentsOnPost(@PathVariable("postId") Long postId){
         log.debug("Received request to get all comments from post {}", postId);
         return new ResponseEntity<>(commentService.getAllCommentsOnPost(postId), HttpStatus.OK);
@@ -59,7 +59,7 @@ public class CommentController {
             @ApiResponse(code = 403, message = "You are not authorized")
     })
     @PatchMapping("/{postId}/editComment/{commentId}")
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<CommentResponseDto> updatesComment(@PathVariable("postId") Long postId, @PathVariable("commentId") Long commentId,
                                             @RequestBody @Valid CommentRequestDto commentRequestDto){
         log.debug("Received request to update comment");
@@ -73,7 +73,7 @@ public class CommentController {
             @ApiResponse(code = 403, message = "You are not authorized")
     })
     @DeleteMapping("/{postId}/deleteComment/{commentId}")
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<GenericResponse> deleteComment(@PathVariable("postId") Long postId, @PathVariable("commentId") Long commentId) {
         commentService.deleteComment(postId, commentId);
         return new ResponseEntity<>(GenericResponse.buildGenericResponse("Comment Deleted Successfully"),HttpStatus.OK);

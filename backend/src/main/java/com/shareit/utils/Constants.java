@@ -6,4 +6,9 @@ public interface Constants {
     String CLAIMS_USERNAME = "username";
     String MINUTES = " minutes";
     String MONTH = " months";
+
+    String[] PUBLIC_URLS = {
+            "/auth/**",
+            "/post/posts"
+    };
 }

@@ -26,7 +26,7 @@ public class UserController {
             @ApiResponse(code = 403, message = "You are not authorized")
     })
     @DeleteMapping("/removeUser/{userId}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<GenericResponse> removeUser(@PathVariable("userId") Long userId){
         userService.deleteUser(userId);
         return new ResponseEntity<>(GenericResponse.buildGenericResponse("User Deleted Successfully"), HttpStatus.OK);
@@ -39,7 +39,7 @@ public class UserController {
             @ApiResponse(code = 403, message = "You are not authorized")
     })
     @PatchMapping("/update")
-    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
         return new ResponseEntity<>(userService.updateUser(userDto), HttpStatus.OK);
     }
