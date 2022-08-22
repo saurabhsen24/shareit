@@ -60,7 +60,4 @@ public class User {
     @OneToMany( mappedBy = "user")
     private List<Vote> votes;
 
-    @OneToMany(mappedBy = "user")
-    private List<UserCommunity> communityOfUsers;
-
 }

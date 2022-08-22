@@ -56,9 +56,6 @@ public class Post {
     @JsonIgnoreProperties( value = "post" )
     private List<Vote> votes;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "community_id")
-    private Community community;
 
     public void addComment(Comment comment) {
         commentList.add(comment);

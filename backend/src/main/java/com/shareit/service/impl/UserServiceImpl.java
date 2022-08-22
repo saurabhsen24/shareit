@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -41,6 +42,11 @@ public class UserServiceImpl implements UserService {
         log.info("Saving the user {} in db", user.getUserName());
 
         Role role = roleService.findByRoleName(RoleType.USER);
+
+        if(Objects.isNull( role )) {
+            throw new ResourceNotFoundException("Role not found");
+        }
+
         user.setRoles(Arrays.asList(role));
         userRepository.save(user);
 
