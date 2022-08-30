@@ -1,5 +1,6 @@
 package com.shareit.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -49,15 +50,22 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @JsonIgnoreProperties(value = "users")
     private List<Role> roles;
 
     @OneToMany( mappedBy = "user", cascade = CascadeType.REMOVE )
+    @JsonIgnoreProperties(value = "user")
     private List<Post> posts;
 
     @OneToMany( mappedBy = "user" )
+    @JsonIgnoreProperties(value = "user")
     private List<Comment> comments;
 
     @OneToMany( mappedBy = "user")
     private List<Vote> votes;
 
+    @Override
+    public String toString() {
+        return "User { userName =" + userName + " , password = " + password + " , email = "+ email + " }";
+    }
 }

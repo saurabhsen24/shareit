@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -77,6 +78,11 @@ public class UserServiceImpl implements UserService {
         }
 
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
 }

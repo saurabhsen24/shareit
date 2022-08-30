@@ -18,4 +18,6 @@ public interface UserService {
     UserDto updateUser(UserDto user);
 
     void deleteUser(Long userId);
+
+    Optional<User> findByEmail(String email);
 }

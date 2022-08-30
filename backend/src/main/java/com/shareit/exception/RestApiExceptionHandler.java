@@ -52,6 +52,19 @@ public class RestApiExceptionHandler {
         return errorMessage;
     }
 
+    @ExceptionHandler(TimeExpiredException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorMessage handleTimeExpiredException(Exception ex, WebRequest webRequest) {
+        ErrorMessage errorMessage = ErrorMessage.builder()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .message(ex.getMessage())
+                .description(webRequest.getDescription(false))
+                .timestamp(new Date())
+                .build();
+
+        return errorMessage;
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorMessage handleGlobalException(Exception ex, WebRequest webRequest) {

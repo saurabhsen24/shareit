@@ -1,6 +1,8 @@
 package com.shareit.service.impl;
 
+import com.shareit.dto.request.ChangePasswordRequest;
 import com.shareit.dto.request.LoginRequest;
+import com.shareit.dto.request.ResetPasswordRequest;
 import com.shareit.dto.request.SignupRequest;
 import com.shareit.dto.response.AuthResponse;
 import com.shareit.dto.response.GenericResponse;
@@ -11,6 +13,7 @@ import com.shareit.service.RefreshTokenService;
 import com.shareit.service.UserService;
 import com.shareit.utils.Constants;
 import com.shareit.utils.JwtHelper;
+import jdk.management.resource.ResourceRequestDeniedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,11 +21,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -91,6 +94,29 @@ public class AuthServiceImpl implements AuthService {
         return GenericResponse.builder()
                 .message("User successfully signed up!")
                 .build();
+    }
+
+    @Override
+    public void resetPassword(ResetPasswordRequest resetPasswordRequest) {
+
+        log.debug("Updating the user's {} password {}", resetPasswordRequest.getEmail(), resetPasswordRequest.getNewPassword());
+
+        User user = userService.findByEmail(resetPasswordRequest.getEmail()).orElseThrow(ResourceRequestDeniedException::new);
+        user.setPassword(passwordEncoder.encode(resetPasswordRequest.getNewPassword()));
+        userService.saveUser(user);
+
+    }
+
+    @Override
+    public void updatePassword(ChangePasswordRequest changePasswordRequest){
+        User user = userService.getUserByUsername(JwtHelper.getCurrentLoggedInUsername());
+
+        if(passwordEncoder.matches(user.getPassword(), changePasswordRequest.getOldPassword())) {
+            user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+            userService.saveUser(user);
+        } else {
+            throw new BadRequestException("Old Password is wrong");
+        }
     }
 
 }

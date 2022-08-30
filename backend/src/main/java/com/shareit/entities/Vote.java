@@ -29,4 +29,10 @@ public class Vote {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn( name = "post_id", nullable = false )
     private Post post;
+
+    @Override
+    public String toString() {
+        return "Vote { voteType = " + voteType.toString() + "}";
+    }
+
 }
