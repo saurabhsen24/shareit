@@ -1,6 +1,5 @@
 package com.shareit.service;
 
-import com.shareit.dto.request.ChangePasswordRequest;
 import com.shareit.dto.request.LoginRequest;
 import com.shareit.dto.request.ResetPasswordRequest;
 import com.shareit.dto.request.SignupRequest;
@@ -14,5 +13,4 @@ public interface AuthService {
 
      void resetPassword(ResetPasswordRequest resetPasswordRequest);
 
-     void updatePassword(ChangePasswordRequest changePasswordRequest);
 }

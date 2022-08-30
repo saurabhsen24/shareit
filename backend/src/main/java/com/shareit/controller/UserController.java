@@ -1,6 +1,7 @@
 package com.shareit.controller;
 
 import com.shareit.dto.UserDto;
+import com.shareit.dto.request.ChangePasswordRequest;
 import com.shareit.dto.response.GenericResponse;
 import com.shareit.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -43,4 +44,12 @@ public class UserController {
     public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
         return new ResponseEntity<>(userService.updateUser(userDto), HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Updates Password", response = GenericResponse.class)
+    @PutMapping(value = "/changePassword")
+    public ResponseEntity<GenericResponse> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
+        userService.updatePassword(changePasswordRequest);
+        return ResponseEntity.ok(GenericResponse.buildGenericResponse("Password updated successfully"));
+    }
+
 }

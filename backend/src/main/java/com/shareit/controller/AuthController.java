@@ -1,10 +1,12 @@
 package com.shareit.controller;
 
-import com.shareit.dto.request.*;
+import com.shareit.dto.request.ForgetPasswordRequest;
+import com.shareit.dto.request.LoginRequest;
+import com.shareit.dto.request.ResetPasswordRequest;
+import com.shareit.dto.request.SignupRequest;
 import com.shareit.dto.response.AuthResponse;
 import com.shareit.dto.response.GenericResponse;
 import com.shareit.service.AuthService;
-import com.shareit.service.EmailService;
 import com.shareit.service.OTPService;
 import com.shareit.utils.JwtHelper;
 import com.shareit.utils.Utils;
@@ -64,15 +66,8 @@ public class AuthController {
     @ApiOperation(value = "Validates OTP", response = GenericResponse.class)
     @PutMapping(value = "/validateOTP")
     public ResponseEntity<GenericResponse> validateOTP(@RequestBody ResetPasswordRequest resetPasswordRequest) {
-        //otpService.validateOTP(resetPasswordRequest.getOtp(), resetPasswordRequest.getEmail());
+        otpService.validateOTP(resetPasswordRequest.getOtp(), resetPasswordRequest.getEmail());
         authService.resetPassword(resetPasswordRequest);
-        return ResponseEntity.ok(GenericResponse.buildGenericResponse("Password updated successfully"));
-    }
-
-    @ApiOperation(value = "Updates Password", response = GenericResponse.class)
-    @PutMapping(value = "/changePassword")
-    public ResponseEntity<GenericResponse> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
-        authService.updatePassword(changePasswordRequest);
         return ResponseEntity.ok(GenericResponse.buildGenericResponse("Password updated successfully"));
     }
 
