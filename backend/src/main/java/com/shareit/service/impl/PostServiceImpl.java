@@ -1,5 +1,6 @@
 package com.shareit.service.impl;
 
+import com.shareit.dto.projection.PostProjection;
 import com.shareit.dto.request.PostRequestDto;
 import com.shareit.dto.response.PostResponseDto;
 import com.shareit.entities.Post;
@@ -65,7 +66,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponseDto getPostById(Long postId) {
-        Post post = findPostByPostId(postId);
+        User user = userService.getUserByUsername(JwtHelper.getCurrentLoggedInUsername());
+        PostProjection post = postRepository.findPost(postId, user.getUserId());
+
         return PostResponseDto.from(post);
     }
 

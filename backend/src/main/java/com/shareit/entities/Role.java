@@ -1,5 +1,7 @@
 package com.shareit.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.shareit.enums.RoleType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,6 +26,7 @@ public class Role {
     private RoleType roleType;
 
     @ManyToMany(mappedBy = "roles")
+    @JsonIgnoreProperties(value = "roles")
     private List<User> users;
 
     public Role(RoleType roleType){

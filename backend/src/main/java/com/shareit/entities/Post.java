@@ -46,6 +46,7 @@ public class Post {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn( name = "user_id",nullable = false )
+    @JsonIgnoreProperties(value = "posts")
     private User user;
 
     @OneToMany(mappedBy = "post", orphanRemoval = true)
@@ -56,9 +57,6 @@ public class Post {
     @JsonIgnoreProperties( value = "post" )
     private List<Vote> votes;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "community_id")
-    private Community community;
 
     public void addComment(Comment comment) {
         commentList.add(comment);
@@ -78,5 +76,10 @@ public class Post {
     public void removeVote(Vote vote) {
         votes.remove(vote);
         vote.setPost(null);
+    }
+
+    @Override
+    public String toString() {
+        return "Post { postTitle = "+ postTitle + ", postDescription = " + postDescription + ", postUrl = " + postUrl + "}";
     }
 }

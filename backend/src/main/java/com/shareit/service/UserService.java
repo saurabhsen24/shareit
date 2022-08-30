@@ -1,6 +1,7 @@
 package com.shareit.service;
 
 import com.shareit.dto.UserDto;
+import com.shareit.dto.request.ChangePasswordRequest;
 import com.shareit.entities.User;
 
 import java.util.Optional;
@@ -18,4 +19,9 @@ public interface UserService {
     UserDto updateUser(UserDto user);
 
     void deleteUser(Long userId);
+
+    Optional<User> findByEmail(String email);
+
+    void updatePassword(ChangePasswordRequest changePasswordRequest);
+
 }

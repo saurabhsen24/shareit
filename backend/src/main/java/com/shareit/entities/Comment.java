@@ -1,5 +1,6 @@
 package com.shareit.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -28,10 +29,15 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn( name = "user_id" )
+    @JsonIgnoreProperties(value = "comments")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn( name = "post_id" )
     private Post post;
 
+    @Override
+    public String toString() {
+        return "Comment { text = "+ text +  "}";
+    }
 }

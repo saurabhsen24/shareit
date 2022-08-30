@@ -7,6 +7,5 @@ public interface PostProjection {
     String getPostDescription();
     String getPostUrl();
     Integer getVoteCount();
-
     String getUserName();
 }
