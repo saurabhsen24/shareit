@@ -7,12 +7,12 @@ import com.shareit.dto.response.AuthResponse;
 import com.shareit.dto.response.GenericResponse;
 import com.shareit.entities.User;
 import com.shareit.exception.BadRequestException;
+import com.shareit.exception.ResourceNotFoundException;
 import com.shareit.service.AuthService;
 import com.shareit.service.RefreshTokenService;
 import com.shareit.service.UserService;
 import com.shareit.utils.Constants;
 import com.shareit.utils.JwtHelper;
-import jdk.management.resource.ResourceRequestDeniedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -99,7 +99,7 @@ public class AuthServiceImpl implements AuthService {
 
         log.debug("Updating the user's {} password {}", resetPasswordRequest.getEmail(), resetPasswordRequest.getNewPassword());
 
-        User user = userService.findByEmail(resetPasswordRequest.getEmail()).orElseThrow(ResourceRequestDeniedException::new);
+        User user = userService.findByEmail(resetPasswordRequest.getEmail()).orElseThrow(() -> new ResourceNotFoundException());
         user.setPassword(passwordEncoder.encode(resetPasswordRequest.getNewPassword()));
         userService.saveUser(user);
 
