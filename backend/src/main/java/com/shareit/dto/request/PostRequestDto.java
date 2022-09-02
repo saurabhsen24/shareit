@@ -13,6 +13,5 @@ import lombok.NoArgsConstructor;
 public class PostRequestDto extends PostDto {
 
     private String postUrl;
-    private String communityName;
 
 }

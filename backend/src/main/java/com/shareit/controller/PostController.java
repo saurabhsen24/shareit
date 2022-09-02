@@ -49,7 +49,7 @@ public class PostController {
         return new ResponseEntity<>(postService.getAllPosts(), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Gets post", response = PostRequestDto.class)
+    @ApiOperation(value = "Gets post", response = PostResponseDto.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Fetched post successfully"),
             @ApiResponse(code = 401, message = "You are not authenticated")
