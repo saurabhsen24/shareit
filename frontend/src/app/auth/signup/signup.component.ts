@@ -1,5 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { ErrorResponse } from "src/app/shared/models/response/ErrorResponse.model";
+import { GenericResponse } from "src/app/shared/models/response/GenericResponse.model";
+import { AuthService } from "src/app/shared/services/auth.service";
+import { MessageService } from "src/app/shared/services/message.service";
 
 @Component({
   selector: "app-signup",
@@ -8,8 +13,13 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 })
 export class SignupComponent implements OnInit {
   signupForm: FormGroup;
+  successResponse: GenericResponse;
 
-  constructor() {}
+  constructor(
+    private authService: AuthService,
+    private messageServide: MessageService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.signupForm = new FormGroup({
@@ -20,6 +30,44 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.signupForm);
+    const Toast = this.messageServide.getToast();
+
+    if (this.signupForm.invalid) {
+      Toast.fire({
+        icon: "error",
+        iconColor: "white",
+        text: "Please provide valid data",
+        background: "#f27474",
+        color: "white",
+      });
+      return;
+    }
+
+    this.authService.signup(this.signupForm.value).subscribe(
+      (response: GenericResponse) => {
+        console.log(response);
+        this.successResponse = response;
+        this.router.navigateByUrl("/login");
+        this.signupForm.reset();
+      },
+      (err: ErrorResponse) => {
+        Toast.fire({
+          icon: "error",
+          iconColor: "white",
+          text: `${err.message}`,
+          background: "#f27474",
+          color: "white",
+        });
+      },
+      () => {
+        Toast.fire({
+          icon: "success",
+          iconColor: "white",
+          text: `${this.successResponse.message}`,
+          background: "#a5dc86",
+          color: "white",
+        });
+      }
+    );
   }
 }
