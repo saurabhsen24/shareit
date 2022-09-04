@@ -8,6 +8,8 @@ import { LoginComponent } from "./auth/login/login.component";
 import { SignupComponent } from "./auth/signup/signup.component";
 import { ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { ForgetPasswordComponent } from './auth/forget-password/forget-password.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,8 @@ import { HttpClientModule } from "@angular/common/http";
     HeaderComponent,
     LoginComponent,
     SignupComponent,
+    ResetPasswordComponent,
+    ForgetPasswordComponent,
   ],
   imports: [
     BrowserModule,

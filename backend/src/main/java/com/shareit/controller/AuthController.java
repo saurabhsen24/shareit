@@ -7,9 +7,7 @@ import com.shareit.dto.request.SignupRequest;
 import com.shareit.dto.response.AuthResponse;
 import com.shareit.dto.response.GenericResponse;
 import com.shareit.service.AuthService;
-import com.shareit.service.OTPService;
 import com.shareit.utils.JwtHelper;
-import com.shareit.utils.Utils;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -31,8 +29,6 @@ public class AuthController {
     @Autowired
     private JwtHelper jwtHelper;
 
-    @Autowired
-    private OTPService otpService;
 
     @ApiOperation(value = "Login user", response = AuthResponse.class)
     @ApiResponses(value = {
@@ -55,18 +51,17 @@ public class AuthController {
         return new ResponseEntity<>(authService.signupUser(signupRequest),HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Generate OTP", response = GenericResponse.class)
-    @PostMapping(value = "/generateOTP")
-    public ResponseEntity<GenericResponse> generateOTP(@RequestBody ForgetPasswordRequest forgetPasswordRequest)
+    @ApiOperation(value = "Forget Password", response = GenericResponse.class)
+    @PostMapping(value = "/forgetPassword")
+    public ResponseEntity<GenericResponse> forgetPassword(@RequestBody ForgetPasswordRequest forgetPasswordRequest)
             throws MessagingException {
-        otpService.generateOTP(Utils.getOTP(), forgetPasswordRequest.getEmail());
+        authService.forgetPassword(forgetPasswordRequest);
         return ResponseEntity.ok(GenericResponse.buildGenericResponse("OTP is sent to the recipient, please check your email"));
     }
 
-    @ApiOperation(value = "Validates OTP", response = GenericResponse.class)
-    @PutMapping(value = "/validateOTP")
-    public ResponseEntity<GenericResponse> validateOTP(@RequestBody ResetPasswordRequest resetPasswordRequest) {
-        otpService.validateOTP(resetPasswordRequest.getOtp(), resetPasswordRequest.getEmail());
+    @ApiOperation(value = "Reset Password", response = GenericResponse.class)
+    @PutMapping(value = "/resetPassword")
+    public ResponseEntity<GenericResponse> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) {
         authService.resetPassword(resetPasswordRequest);
         return ResponseEntity.ok(GenericResponse.buildGenericResponse("Password updated successfully"));
     }
