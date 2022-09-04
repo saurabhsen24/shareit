@@ -1,15 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-import { ForgetPasswordRequest } from "src/app/shared/models/requests/ForgetPasswordRequest.model";
 import { LoginRequest } from "src/app/shared/models/requests/LoginRequest.model";
 import { ErrorResponse } from "src/app/shared/models/response/ErrorResponse.model";
-import { GenericResponse } from "src/app/shared/models/response/GenericResponse.model";
 import { LoginResponse } from "src/app/shared/models/response/LoginResponse.model";
 import { AuthService } from "src/app/shared/services/auth.service";
 import { MessageService } from "src/app/shared/services/message.service";
 import { TokenStorageService } from "src/app/shared/services/token-storage.service";
-import Swal from "sweetalert2";
 
 @Component({
   selector: "app-login",
@@ -19,6 +16,8 @@ import Swal from "sweetalert2";
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loginRequest: LoginRequest;
+
+  isLoggedIn: boolean;
 
   constructor(
     private authService: AuthService,
@@ -50,10 +49,7 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(this.loginForm.value).subscribe(
       (loginResponse: LoginResponse) => {
-        console.log(loginResponse);
-        this.tokenStorage.saveUser({
-          ...loginResponse,
-        });
+        this.tokenStorage.saveUser(loginResponse);
 
         this.router.navigateByUrl("/");
         this.loginForm.reset();
@@ -80,48 +76,6 @@ export class LoginComponent implements OnInit {
   }
 
   forgetPassword() {
-    let responseMessage = "";
-    let forgetPasswordObs = null;
-
-    Swal.fire({
-      title: "Please enter your email",
-      input: "email",
-      inputPlaceholder: "Enter your email address",
-      showCancelButton: true,
-      confirmButtonText: "Send OTP",
-      showLoaderOnConfirm: true,
-      preConfirm: (email: string) => {
-        let forgetPasswordRequest: ForgetPasswordRequest = {
-          email: `${email}`,
-        };
-        forgetPasswordObs = this.authService.generateOTP(forgetPasswordRequest);
-      },
-      allowOutsideClick: () => !Swal.isLoading(),
-      backdrop: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Sending Email",
-        });
-
-        Swal.showLoading();
-
-        forgetPasswordObs.subscribe(
-          (response: GenericResponse) => {
-            Swal.close();
-            responseMessage = response.message;
-          },
-          (err: ErrorResponse) => {
-            console.log(err);
-            responseMessage = err.message;
-            this.messageService.showMessage("info", responseMessage);
-          },
-          () => {
-            console.log("Done");
-            this.messageService.showMessage("success", responseMessage);
-          }
-        );
-      }
-    });
+    this.router.navigateByUrl("/forgetPassword");
   }
 }

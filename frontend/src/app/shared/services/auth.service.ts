@@ -28,9 +28,9 @@ export class AuthService {
       );
   }
 
-  generateOTP(forgetPasswordRequest: ForgetPasswordRequest) {
+  forgetPassword(forgetPasswordRequest: ForgetPasswordRequest) {
     return this.http
-      .post(`${this.authApi}/generateOTP`, forgetPasswordRequest)
+      .post(`${this.authApi}/forgetPassword`, forgetPasswordRequest)
       .pipe(
         tap((response) => console.log(response)),
         catchError((errResponse) => throwError(errResponse.error))
@@ -46,7 +46,7 @@ export class AuthService {
 
   resetPassword(resetPasswordRequest: ResetPasswordRequest) {
     return this.http
-      .put(`${this.authApi}/validateOTP`, resetPasswordRequest)
+      .put(`${this.authApi}/resetPassword`, resetPasswordRequest)
       .pipe(
         tap((response) => console.log(response)),
         catchError((errResponse) => throwError(errResponse.error))
