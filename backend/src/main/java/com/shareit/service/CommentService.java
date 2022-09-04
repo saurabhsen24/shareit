@@ -1,19 +1,21 @@
 package com.shareit.service;
 
+import com.shareit.dto.request.CommentRequestDto;
+import com.shareit.dto.response.CommentResponseDto;
 import com.shareit.entities.Comment;
 
 import java.util.List;
 
 public interface CommentService {
 
-    List<Comment> getAllCommentsOnPost(String postId);
+    List<CommentResponseDto> getAllCommentsOnPost(Long postId);
 
-    Comment getComment(String commentId);
+    Comment getComment(Long commentId);
 
-    Comment createComment(Comment comment);
+    void createComment(Long postId, CommentRequestDto commentRequestDto);
 
-    Comment updateComment(Comment comment);
+    CommentResponseDto updateComment(Long postId, Long commentId, CommentRequestDto commentRequestDto);
 
-    void deleteComment(Comment comment);
+    void deleteComment(Long postId, Long commentId);
 
 }

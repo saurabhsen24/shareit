@@ -1,22 +1,35 @@
 package com.shareit.service.impl;
 
+import com.shareit.dto.UserDto;
+import com.shareit.dto.request.ChangePasswordRequest;
 import com.shareit.entities.Role;
 import com.shareit.entities.User;
 import com.shareit.enums.RoleType;
 import com.shareit.exception.BadRequestException;
-import com.shareit.exception.NotFoundException;
+import com.shareit.exception.ResourceNotFoundException;
 import com.shareit.repository.UserRepository;
+import com.shareit.service.RoleService;
 import com.shareit.service.UserService;
+import com.shareit.utils.JwtHelper;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
+import java.util.*;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     @Autowired
+    private RoleService roleService;
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public User getUserByUsername(String userName) {
@@ -24,25 +37,72 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean checkIfUserExistsByUsernameOrEmail(String userName, String email) {
+        return userRepository.existsByUserNameOrEmail(userName, email);
+    }
+
+    @Override
     public void saveUser(User user) {
-        Role role = new Role(RoleType.USER);
-        user.getRoles().add(role);
+
+        log.info("Saving the user {} in db", user.getUserName());
+
+        List<Role> userRoles = new ArrayList<>();
+        Role role = roleService.findByRoleName(RoleType.USER);
+
+        if(Objects.isNull( role )) {
+            throw new ResourceNotFoundException("Role not found");
+        }
+
+        userRoles.add(role);
+
+        user.setRoles(userRoles);
         userRepository.save(user);
+
+        log.info("User {} saved in DB", user.getUserName());
     }
 
     @Override
-    public User getUserById(String userId) {
-        return userRepository.findById(UUID.fromString(userId)).orElseThrow(() -> new NotFoundException("User Not Found!"));
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User Not Found!"));
     }
 
     @Override
-    public User updateUser(User user) {
-        return userRepository.save(user);
+    public UserDto updateUser(UserDto userDto) {
+        User user = userRepository.findByUserName(userDto.getUserName()).orElseThrow(() -> new ResourceNotFoundException("User not found!"));
+        user.setUserName(userDto.getUserName());
+        user.setEmail(userDto.getEmail());
+        user.setProfilePicUrl(userDto.getProfilePic());
+
+        userRepository.save(user);
+
+        return userDto;
     }
 
     @Override
-    public void deleteUser(String userId) {
-        userRepository.deleteById(UUID.fromString(userId));
+    public void deleteUser(Long userId) {
+        if(BooleanUtils.isFalse(userRepository.existsById(userId))) {
+            throw new ResourceNotFoundException("User not found");
+        }
+
+        userRepository.deleteById(userId);
     }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public void updatePassword(ChangePasswordRequest changePasswordRequest){
+        User user = getUserByUsername(JwtHelper.getCurrentLoggedInUsername());
+
+        if(passwordEncoder.matches(changePasswordRequest.getOldPassword(),user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+            saveUser(user);
+        } else {
+            throw new BadRequestException("Old Password is wrong");
+        }
+    }
+
 
 }

@@ -1,13 +1,9 @@
 package com.shareit.entities;
 
 import com.shareit.enums.VoteType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Table( name = "vote" )
@@ -15,11 +11,12 @@ import java.util.UUID;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Vote {
 
     @Id
-    @GeneratedValue
-    private UUID voteId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long voteId;
 
     @Enumerated
     @Column( name = "vote_type" )
@@ -32,4 +29,10 @@ public class Vote {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn( name = "post_id", nullable = false )
     private Post post;
+
+    @Override
+    public String toString() {
+        return "Vote { voteType = " + voteType.toString() + "}";
+    }
+
 }

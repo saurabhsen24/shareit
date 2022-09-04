@@ -13,4 +13,9 @@ public class GenericResponse {
 
     private String message;
 
+    public static GenericResponse buildGenericResponse(String message){
+        return GenericResponse.builder()
+                .message(message)
+                .build();
+    }
 }

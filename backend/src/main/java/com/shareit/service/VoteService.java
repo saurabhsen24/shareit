@@ -1,15 +1,12 @@
 package com.shareit.service;
 
-import com.shareit.entities.Vote;
-import com.shareit.enums.VoteType;
+import com.shareit.dto.request.VoteRequestDto;
+import com.shareit.dto.response.VoteResponseDto;
 
 public interface VoteService {
 
-    Vote createVote(Vote vote);
+    VoteResponseDto createVote(Long postId, Long userId, VoteRequestDto voteRequestDto);
 
-    Vote updateVote(Vote vote);
+    VoteResponseDto updateVote(Long postId, Long userId, VoteRequestDto voteRequestDto);
 
-    void delete(Vote vote);
-
-    Integer getAllVotesOnPost(String postId,VoteType voteType);
 }

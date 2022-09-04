@@ -6,9 +6,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table( name = "user" )
@@ -20,16 +20,17 @@ import java.util.UUID;
 public class User {
 
     @Id
-    @GeneratedValue
-    private UUID userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long userId;
 
-    @Column( name = "user", nullable = false, unique = true )
+    @Column( name = "user_name", nullable = false, unique = true )
     private String userName;
 
     @Column( name = "password", nullable = false )
     private String password;
 
-    @Column( name = "email" )
+    @Column( name = "email", nullable = false, unique = true )
+    @Email
     private String email;
 
     @Column( name = "profile_pic" )
@@ -49,21 +50,22 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @JsonIgnoreProperties(value = "users")
     private List<Role> roles;
 
-    @OneToMany( mappedBy = "user" )
-    @JsonIgnoreProperties( value = "user" )
+    @OneToMany( mappedBy = "user", cascade = CascadeType.REMOVE )
+    @JsonIgnoreProperties(value = "user")
     private List<Post> posts;
 
     @OneToMany( mappedBy = "user" )
-    @JsonIgnoreProperties( value = "user" )
+    @JsonIgnoreProperties(value = "user")
     private List<Comment> comments;
 
     @OneToMany( mappedBy = "user")
-    @JsonIgnoreProperties( value = "user" )
     private List<Vote> votes;
 
-    @OneToMany(mappedBy = "user")
-    private List<UserCommunity> communityOfUsers;
-
+    @Override
+    public String toString() {
+        return "User { userName =" + userName + " , password = " + password + " , email = "+ email + " }";
+    }
 }

@@ -1,17 +1,14 @@
 package com.shareit.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import com.shareit.dto.request.PostRequestDto;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table( name = "posts" )
@@ -19,14 +16,15 @@ import java.util.UUID;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Post {
 
     @Id
-    @GeneratedValue
-    private UUID postId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long postId;
 
-    @Column( name = "post_name", nullable = false )
-    private String postName;
+    @Column( name = "post_title", nullable = false )
+    private String postTitle;
 
     @Lob
     @Column( name = "post_desc" )
@@ -48,6 +46,7 @@ public class Post {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn( name = "user_id",nullable = false )
+    @JsonIgnoreProperties(value = "posts")
     private User user;
 
     @OneToMany(mappedBy = "post", orphanRemoval = true)
@@ -58,9 +57,6 @@ public class Post {
     @JsonIgnoreProperties( value = "post" )
     private List<Vote> votes;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "community_id", nullable = false )
-    private Community community;
 
     public void addComment(Comment comment) {
         commentList.add(comment);
@@ -80,5 +76,10 @@ public class Post {
     public void removeVote(Vote vote) {
         votes.remove(vote);
         vote.setPost(null);
+    }
+
+    @Override
+    public String toString() {
+        return "Post { postTitle = "+ postTitle + ", postDescription = " + postDescription + ", postUrl = " + postUrl + "}";
     }
 }
