@@ -1,11 +1,11 @@
-import { NgModule } from "@angular/core";
-import { Routes, RouterModule } from "@angular/router";
-import { ForgetPasswordComponent } from "./auth/forget-password/forget-password.component";
-import { LoginComponent } from "./auth/login/login.component";
-import { ResetPasswordComponent } from "./auth/reset-password/reset-password.component";
-import { SignupComponent } from "./auth/signup/signup.component";
-import { PostComponent } from "./pages/post/post.component";
-import { ViewPostComponent } from "./pages/view-post/view-post.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ForgetPasswordComponent } from './auth/forget-password/forget-password.component';
+import { LoginComponent } from './auth/login/login.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { SignupComponent } from './auth/signup/signup.component';
+import { PostComponent } from './pages/post/post.component';
+import { ViewPostComponent } from './pages/view-post/view-post.component';
 
 const routes: Routes = [
   { path: "", component: ViewPostComponent },
@@ -18,6 +18,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
