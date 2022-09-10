@@ -1,11 +1,39 @@
 <div class="container">
-  <div class="card" style="width: 18rem;">
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="card-link">Card link</a>
-      <a href="#" class="card-link">Another link</a>
-    </div>
-  </div>
+  <mat-card class="post-card offset-md-3 mt-5">
+    <mat-card-header>
+      <div
+        mat-card-avatar
+        class="post-header-image"
+        style="background-image: url('../../../assets/images/user.png')"
+      ></div>
+      <mat-card-title>{{ post.userName }}</mat-card-title>
+      <mat-card-subtitle>{{ post.postTitle }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        {{ post.postDescription }}
+      </p>
+    </mat-card-content>
+    <img
+      *ngIf="post.postUrl"
+      mat-card-image
+      src="{{ post.postUrl }}"
+      alt="Comedy photo"
+    />
+
+    <mat-card-actions class="d-flex justify-content-start mb-2">
+      <button mat-mini-fab color="primary" class="ms-3 me-3">
+        <mat-icon>arrow_upward</mat-icon>
+      </button>
+      <button mat-mini-fab color="primary" class="ms-3 me-3">
+        <mat-icon>arrow_downward</mat-icon>
+      </button>
+      <button mat-raised-button color="primary" class="ms-3 me-3">
+        <mat-icon>comment</mat-icon> Comment
+      </button>
+      <button mat-raised-button color="primary" class="ms-3">
+        <mat-icon>report</mat-icon> Report
+      </button>
+    </mat-card-actions>
+  </mat-card>
 </div>

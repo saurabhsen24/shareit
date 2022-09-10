@@ -8,10 +8,18 @@ import { LoginComponent } from "./auth/login/login.component";
 import { SignupComponent } from "./auth/signup/signup.component";
 import { ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
-import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
-import { ForgetPasswordComponent } from './auth/forget-password/forget-password.component';
-import { PostComponent } from './pages/post/post.component';
-import { ViewPostComponent } from './pages/view-post/view-post.component';
+import { ResetPasswordComponent } from "./auth/reset-password/reset-password.component";
+import { ForgetPasswordComponent } from "./auth/forget-password/forget-password.component";
+import { PostComponent } from "./pages/post/post.component";
+import { ViewPostComponent } from "./pages/view-post/view-post.component";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import {
+  MatCardModule,
+  MatDividerModule,
+  MatMenuModule,
+} from "@angular/material";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
 
 @NgModule({
   declarations: [
@@ -29,6 +37,12 @@ import { ViewPostComponent } from './pages/view-post/view-post.component';
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    MatMenuModule,
+    MatDividerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

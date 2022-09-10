@@ -1,0 +1,12 @@
+.post-card {
+  max-width: 640px;
+  max-height: 2000px;
+  background-color: #fff;
+}
+
+
+
+.post-header-image {
+  background-size: cover;
+}
+
