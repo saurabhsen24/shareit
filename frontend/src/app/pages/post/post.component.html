@@ -40,24 +40,24 @@
         <mat-icon>report</mat-icon> Report
       </button>
       <button
-      mat-mini-fab
-      color="primary"
-      class="ms-2"
-      [matMenuTriggerFor]="menu"
-    >
-      <mat-icon>more_horiz</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item>
-        <mat-icon>edit</mat-icon>
-        <span>Update</span>
+        mat-mini-fab
+        color="primary"
+        class="ms-2"
+        [matMenuTriggerFor]="menu"
+      >
+        <mat-icon>more_horiz</mat-icon>
       </button>
-      <mat-divider></mat-divider>
-      <button mat-menu-item>
-        <mat-icon>delete</mat-icon>
-        <span>Delete</span>
-      </button>
-    </mat-menu>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>edit</mat-icon>
+          <span>Update</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item>
+          <mat-icon>delete</mat-icon>
+          <span>Delete</span>
+        </button>
+      </mat-menu>
     </mat-card-actions>
 
     <form [formGroup]="commentForm" (ngSubmit)="submitComment()">
@@ -74,5 +74,6 @@
         <mat-icon class="me-1">comment</mat-icon>Comment
       </button>
     </form>
+    <app-comment></app-comment>
   </mat-card>
 </div>

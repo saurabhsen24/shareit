@@ -15,7 +15,16 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'forgetPassword', component: ForgetPasswordComponent },
   { path: 'resetPassword', component: ResetPasswordComponent },
-  { path: 'createPost', component: CreatePostComponent, canActivate: [AuthGuard]},
+  {
+    path: 'createPost',
+    component: CreatePostComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'updatePost/:postId',
+    component: CreatePostComponent,
+    canActivate: [AuthGuard],
+  },
   { path: 'post/:postId', component: PostComponent, canActivate: [AuthGuard] },
 ];
 

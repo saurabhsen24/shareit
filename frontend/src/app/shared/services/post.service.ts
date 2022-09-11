@@ -47,7 +47,7 @@ export class PostService {
 
   updatePost(postId: Number, postRequest: PostRequest) {
     return this.http
-      .put<GenericResponse>(`${this.postApi}/${postId}`, postRequest)
+      .put<GenericResponse>(`${this.postApi}/updatePost/${postId}`, postRequest)
       .pipe(
         tap((response) => console.log(response)),
         catchError((errResponse) => throwError(errResponse.error))

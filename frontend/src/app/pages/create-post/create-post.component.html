@@ -2,7 +2,7 @@
   <div class="login mt-5">
     <div class="card">
       <div class="card-header text-center">
-        <h4 class="card_header">Create a Post</h4>
+        <h4 class="card_header">{{ postHeader }} a Post</h4>
       </div>
       <div class="card-body">
         <form [formGroup]="addPostForm" (ngSubmit)="onSubmit()">
@@ -37,7 +37,6 @@
           </div>
           <div class="form-group row mb-3 mt-3">
             <quill-editor
-              class="text-muted"
               theme="snow"
               formControlName="postDescription"
               placeholder="Text ( required )"
@@ -57,7 +56,11 @@
           </div>
           <div class="mx-auto d-flex justify-content-center">
             <button type="submit" class="btn btn-primary">Post</button>
-            <button type="button" (click)="discardPost()" class="btn btn-outline-danger ms-2">
+            <button
+              type="button"
+              (click)="discardPost()"
+              class="btn btn-outline-danger ms-2"
+            >
               Discard
             </button>
           </div>

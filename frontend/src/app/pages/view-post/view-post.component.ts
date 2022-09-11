@@ -36,7 +36,7 @@ export class ViewPostComponent implements OnInit {
     );
   }
 
-  deletePost(posttId: Number) {
+  deletePost(postId: Number) {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -47,7 +47,9 @@ export class ViewPostComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.postService.deletePost(posttId).subscribe(
+        const posts = this.posts.filter((post) => post.postId !== postId);
+        this.posts = posts;
+        this.postService.deletePost(postId).subscribe(
           (response: GenericResponse) => {
             this.messageService.showMessage('success', response.message);
           },
