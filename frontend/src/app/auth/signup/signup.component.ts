@@ -1,15 +1,15 @@
-import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
-import { ErrorResponse } from "src/app/shared/models/response/ErrorResponse.model";
-import { GenericResponse } from "src/app/shared/models/response/GenericResponse.model";
-import { AuthService } from "src/app/shared/services/auth.service";
-import { MessageService } from "src/app/shared/services/message.service";
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ErrorResponse } from 'src/app/shared/models/response/ErrorResponse.model';
+import { GenericResponse } from 'src/app/shared/models/response/GenericResponse.model';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { MessageService } from 'src/app/shared/services/message.service';
 
 @Component({
-  selector: "app-signup",
-  templateUrl: "./signup.component.html",
-  styleUrls: ["./signup.component.css"],
+  selector: 'app-signup',
+  templateUrl: './signup.component.html',
+  styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent implements OnInit {
   signupForm: FormGroup;
@@ -23,9 +23,9 @@ export class SignupComponent implements OnInit {
 
   ngOnInit() {
     this.signupForm = new FormGroup({
-      username: new FormControl("", Validators.required),
-      email: new FormControl("", [Validators.required, Validators.email]),
-      password: new FormControl("", Validators.required),
+      username: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', Validators.required),
     });
   }
 
@@ -34,11 +34,11 @@ export class SignupComponent implements OnInit {
 
     if (this.signupForm.invalid) {
       Toast.fire({
-        icon: "error",
-        iconColor: "white",
-        text: "Please provide valid data",
-        background: "#f27474",
-        color: "white",
+        icon: 'error',
+        iconColor: 'white',
+        text: 'Please provide valid data',
+        background: '#f27474',
+        color: 'white',
       });
       return;
     }
@@ -47,25 +47,25 @@ export class SignupComponent implements OnInit {
       (response: GenericResponse) => {
         console.log(response);
         this.successResponse = response;
-        this.router.navigateByUrl("/login");
+        this.router.navigateByUrl('/login');
         this.signupForm.reset();
       },
       (err: ErrorResponse) => {
         Toast.fire({
-          icon: "error",
-          iconColor: "white",
+          icon: 'error',
+          iconColor: 'white',
           text: `${err.message}`,
-          background: "#f27474",
-          color: "white",
+          background: '#f27474',
+          color: 'white',
         });
       },
       () => {
         Toast.fire({
-          icon: "success",
-          iconColor: "white",
+          icon: 'success',
+          iconColor: 'white',
           text: `${this.successResponse.message}`,
-          background: "#a5dc86",
-          color: "white",
+          background: '#a5dc86',
+          color: 'white',
         });
       }
     );
