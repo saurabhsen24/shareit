@@ -52,4 +52,15 @@ export class AuthService {
         catchError((errResponse) => throwError(errResponse.error))
       );
   }
+
+  refreshToken(token: string) {
+    return this.http
+      .post(`${this.authApi}/refreshToken`, {
+        refreshToken: token,
+      })
+      .pipe(
+        tap((response) => console.log(response)),
+        catchError((errResponse) => throwError(errResponse.error))
+      );
+  }
 }

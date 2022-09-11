@@ -1,0 +1,68 @@
+<div class="container d-flex justify-content-center">
+  <div class="login mt-5">
+    <div class="card">
+      <div class="card-header text-center">
+        <h4 class="card_header">Create a Post</h4>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="addPostForm" (ngSubmit)="onSubmit()">
+          <div class="form-group row mb-3 mt-3 ps-2 pe-2">
+            <input
+              type="text"
+              class="form-control"
+              id="username"
+              placeholder="Title"
+              formControlName="postTitle"
+            />
+            <span
+              class="text-danger"
+              *ngIf="
+                !addPostForm.get('postTitle').valid &&
+                addPostForm.get('postTitle').touched
+              "
+            >
+              Post Title can't be empty
+            </span>
+          </div>
+          <div class="form-group row mb-3 mt-3 ps-2 pe-2">
+            <textarea
+              type="text"
+              class="form-control"
+              id="username"
+              placeholder="Enter Post URL"
+              formControlName="postUrl"
+              rows="3"
+            >
+            </textarea>
+          </div>
+          <div class="form-group row mb-3 mt-3">
+            <quill-editor
+              class="text-muted"
+              theme="snow"
+              formControlName="postDescription"
+              placeholder="Text ( required )"
+              [modules]="quillConfiguration"
+              [styles]="editorStyle"
+            >
+            </quill-editor>
+            <span
+              class="text-danger"
+              *ngIf="
+                !addPostForm.get('postDescription').valid &&
+                addPostForm.get('postDescription').touched
+              "
+            >
+              Post Description can't be empty
+            </span>
+          </div>
+          <div class="mx-auto d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary">Post</button>
+            <button type="button" (click)="discardPost()" class="btn btn-outline-danger ms-2">
+              Discard
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

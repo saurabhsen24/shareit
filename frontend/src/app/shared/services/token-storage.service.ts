@@ -1,10 +1,11 @@
-import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, Subject } from "rxjs";
-import { Constants } from "../constants/Constants";
-import { LoginResponse } from "../models/response/LoginResponse.model";
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Constants } from '../constants/Constants';
+import { LoginResponse } from '../models/response/LoginResponse.model';
+import { UserData } from '../models/UserData.model';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class TokenStorageService {
   public authStatusListener = new Subject<boolean>();
@@ -22,7 +23,7 @@ export class TokenStorageService {
     this.authStatusListener.next(true);
   }
 
-  getUser() {
+  getUser(): UserData {
     const user = sessionStorage.getItem(Constants.USER_KEY);
     if (user) {
       return JSON.parse(user);

@@ -1,69 +1,65 @@
-import { Component, OnInit } from "@angular/core";
-import { Post } from "src/app/shared/models/Post.model";
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Post } from 'src/app/shared/models/Post.model';
+import { ErrorResponse } from 'src/app/shared/models/response/ErrorResponse.model';
+import { GenericResponse } from 'src/app/shared/models/response/GenericResponse.model';
+import { MessageService } from 'src/app/shared/services/message.service';
+import { PostService } from 'src/app/shared/services/post.service';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: "app-view-post",
-  templateUrl: "./view-post.component.html",
-  styleUrls: ["./view-post.component.css"],
+  selector: 'app-view-post',
+  templateUrl: './view-post.component.html',
+  styleUrls: ['./view-post.component.css'],
 })
 export class ViewPostComponent implements OnInit {
-  userProfileImage =
-    "https://www.flaticon.com/free-icon/user_149071?term=user&page=1&position=8&page=1&position=8&related_id=149071&origin=search";
+  posts: Post[] = [];
 
-  posts: Post[] = [
-    {
-      postTitle: "Comedy Show",
-      postDescription:
-        "Bro this man is actual underrated standup gem... rewatched today and laughed as much as i did the first time and also as much as the audience😳",
-      postId: 1,
-      postUrl:
-        "https://preview.redd.it/cdj44k37c3m91.png?width=640&crop=smart&auto=webp&s=02338df4afdcfc648619b5f248148533af492c96",
-      voteCount: 0,
-      userName: "Saurabh Sen",
-    },
-    {
-      postTitle: "Comedy Show",
-      postDescription:
-        "Bro this man is actual underrated standup gem... rewatched today and laughed as much as i did the first time and also as much as the audience😳",
-      postId: 1,
-      postUrl:
-        "https://preview.redd.it/cdj44k37c3m91.png?width=640&crop=smart&auto=webp&s=02338df4afdcfc648619b5f248148533af492c96",
-      voteCount: 0,
-      userName: "Saurabh Sen",
-    },
-    {
-      postTitle: "Comedy Show",
-      postDescription:
-        "Bro this man is actual underrated standup gem... rewatched today and laughed as much as i did the first time and also as much as the audience😳",
-      postId: 1,
-      postUrl:
-        "https://preview.redd.it/cdj44k37c3m91.png?width=640&crop=smart&auto=webp&s=02338df4afdcfc648619b5f248148533af492c96",
-      voteCount: 0,
-      userName: "Saurabh Sen",
-    },
-    {
-      postTitle: "Comedy Show",
-      postDescription:
-        "Bro this man is actual underrated standup gem... rewatched today and laughed as much as i did the first time and also as much as the audience😳",
-      postId: 1,
-      postUrl:
-        "https://preview.redd.it/cdj44k37c3m91.png?width=640&crop=smart&auto=webp&s=02338df4afdcfc648619b5f248148533af492c96",
-      voteCount: 0,
-      userName: "Saurabh Sen",
-    },
-    {
-      postTitle: "Comedy Show",
-      postDescription:
-        "Bro this man is actual underrated standup gem... rewatched today and laughed as much as i did the first time and also as much as the audience😳",
-      postId: 1,
-      postUrl:
-        "https://preview.redd.it/cdj44k37c3m91.png?width=640&crop=smart&auto=webp&s=02338df4afdcfc648619b5f248148533af492c96",
-      voteCount: 0,
-      userName: "Saurabh Sen",
-    },
-  ];
+  constructor(
+    private postService: PostService,
+    private messageService: MessageService,
+    private router: Router
+  ) {}
 
-  constructor() {}
+  ngOnInit() {
+    this.getAllPosts();
+  }
 
-  ngOnInit() {}
+  getAllPosts() {
+    this.postService.getAllPosts().subscribe(
+      (postData: Post[]) => {
+        this.posts = postData;
+      },
+      (err: ErrorResponse) => {
+        this.messageService.showMessage('error', err.message);
+      }
+    );
+  }
+
+  deletePost(posttId: Number) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.postService.deletePost(posttId).subscribe(
+          (response: GenericResponse) => {
+            this.messageService.showMessage('success', response.message);
+          },
+          (errResponse: ErrorResponse) => {
+            this.messageService.showMessage('error', errResponse.message);
+          }
+        );
+      }
+    });
+  }
+
+  updatePost(postId: Number) {
+    this.router.navigate(['posts', postId]);
+  }
 }

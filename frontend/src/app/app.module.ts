@@ -17,7 +17,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { MatTabsModule } from '@angular/material/tabs';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { QuillModule } from 'ngx-quill';
+import { MatBadgeModule } from '@angular/material/badge';
+import { TokenInterceptor } from './shared/interceptors/token.interceptor';
+import { CreatePostComponent } from './pages/create-post/create-post.component';
+import { UpdatePostComponent } from './pages/update-post/update-post.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +35,8 @@ import { HttpClientModule } from '@angular/common/http';
     ForgetPasswordComponent,
     PostComponent,
     ViewPostComponent,
+    CreatePostComponent,
+    UpdatePostComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,8 +49,13 @@ import { HttpClientModule } from '@angular/common/http';
     MatIconModule,
     MatMenuModule,
     MatDividerModule,
+    MatBadgeModule,
+    MatTabsModule,
+    QuillModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

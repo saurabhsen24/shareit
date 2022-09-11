@@ -1,3 +1,3 @@
 export class Constants {
-  public static USER_KEY = "userData";
+  public static USER_KEY = 'userData';
 }
