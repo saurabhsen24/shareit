@@ -24,7 +24,6 @@ import { QuillModule } from 'ngx-quill';
 import { MatBadgeModule } from '@angular/material/badge';
 import { TokenInterceptor } from './shared/interceptors/token.interceptor';
 import { CreatePostComponent } from './pages/create-post/create-post.component';
-import { CommentComponent } from './pages/comment/comment.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +36,6 @@ import { CommentComponent } from './pages/comment/comment.component';
     PostComponent,
     ViewPostComponent,
     CreatePostComponent,
-    CommentComponent,
   ],
   imports: [
     BrowserModule,

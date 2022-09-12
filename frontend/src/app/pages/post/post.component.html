@@ -74,6 +74,31 @@
         <mat-icon class="me-1">comment</mat-icon>Comment
       </button>
     </form>
-    <app-comment></app-comment>
+    <mat-card *ngFor="let comment of comments">
+      <mat-card-header>
+        <div
+          mat-card-avatar
+          class="post-header-image"
+          style="background-image: url('../../../assets/images/user.png')"
+        ></div>
+        <mat-card-title>{{ comment.userName }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="ms-5" [innerHTML]="comment.commentText"></div>
+      </mat-card-content>
+      <mat-card-actions class="d-flex justify-content-start mb-2">
+        <button mat-mini-fab color="primary" class="ms-3 me-3">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          mat-mini-fab
+          color="primary"
+          class="ms-3 me-3"
+          (click)="deleteComment(post.postId, comment.commentId)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
   </mat-card>
 </div>
