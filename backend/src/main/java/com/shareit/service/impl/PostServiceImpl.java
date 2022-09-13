@@ -66,9 +66,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponseDto getPostById(Long postId) {
-        User user = userService.getUserByUsername(JwtHelper.getCurrentLoggedInUsername());
-        PostProjection post = postRepository.findPost(postId, user.getUserId());
-
+        PostProjection post = postRepository.findPost( postId );
         return PostResponseDto.from(post);
     }
 

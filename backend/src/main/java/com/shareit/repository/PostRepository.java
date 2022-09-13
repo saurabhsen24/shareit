@@ -18,8 +18,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "p.post_desc as postDescription," +
             "p.post_url as postUrl, p.vote_count as voteCount , u.user_name as userName " +
             "FROM posts p INNER JOIN user u ON" +
-            " p.user_id = u.user_id WHERE p.post_id=:postId AND p.user_id=:userId",nativeQuery = true)
-    PostProjection findPost(@Param("postId") Long postId, @Param("userId") Long userId);
+            " p.user_id = u.user_id WHERE p.post_id=:postId",nativeQuery = true)
+    PostProjection findPost( @Param("postId") Long postId );
 
     @Query(value = "SELECT p.post_id as postId ," +
             "p.post_title as postTitle," +
