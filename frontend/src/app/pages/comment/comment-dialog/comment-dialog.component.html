@@ -1,0 +1,28 @@
+<h3 mat-dialog-title><b>Edit Comment</b></h3>
+<mat-dialog-content>
+  <form [formGroup]="commentForm" (ngSubmit)="updateComment(+data.commentId)">
+    <quill-editor
+      class="ql-container"
+      theme="snow"
+      formControlName="commentText"
+      placeholder="Enter comment"
+      [modules]="quillConfiguration"
+      [styles]="editorStyle"
+    >
+    </quill-editor>
+    <mat-dialog-actions align="center">
+      <button mat-raised-button class="mt-3" color="primary" mat-dialog-close>
+        <mat-icon class="me-1">cancel</mat-icon>Cancel
+      </button>
+      <button
+        mat-raised-button
+        class="mt-3"
+        color="primary"
+        type="submit"
+        mat-dialog-close
+      >
+        <mat-icon class="me-1">comment</mat-icon>Update Comment
+      </button>
+    </mat-dialog-actions>
+  </form>
+</mat-dialog-content>

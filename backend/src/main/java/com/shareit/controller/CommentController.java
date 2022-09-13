@@ -32,11 +32,10 @@ public class CommentController {
     })
     @PostMapping("/{postId}/createComment")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<GenericResponse> createComment(@PathVariable("postId") Long postId,
+    public ResponseEntity<CommentResponseDto> createComment(@PathVariable("postId") Long postId,
                                                          @RequestBody @Valid CommentRequestDto commentRequestDto) {
         log.debug("Received request to create comment on post {}", postId);
-        commentService.createComment(postId, commentRequestDto);
-        return new ResponseEntity<>(GenericResponse.buildGenericResponse("Comment created"), HttpStatus.CREATED);
+        return new ResponseEntity<>(commentService.createComment(postId, commentRequestDto), HttpStatus.CREATED);
     }
 
 
@@ -52,18 +51,29 @@ public class CommentController {
         return new ResponseEntity<>(commentService.getAllCommentsOnPost(postId), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Fetches single comment from the post", response = CommentResponseDto.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully fetches comment from the post"),
+            @ApiResponse(code = 401, message = "You are not authorized")
+    })
+    @GetMapping("/{commentId}")
+    public ResponseEntity<CommentResponseDto> getComment(@PathVariable("commentId") Long commentId){
+        log.debug("Received request to fetch comment {}", commentId);
+        return ResponseEntity.ok(commentService.getComment(commentId));
+    }
+
     @ApiOperation(value = "Updates comment on post", response = CommentResponseDto.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Updates comment on post"),
             @ApiResponse(code = 401, message = "You are not authenticated"),
             @ApiResponse(code = 403, message = "You are not authorized")
     })
-    @PatchMapping("/{postId}/editComment/{commentId}")
+    @PatchMapping("/editComment/{commentId}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<CommentResponseDto> updatesComment(@PathVariable("postId") Long postId, @PathVariable("commentId") Long commentId,
+    public ResponseEntity<CommentResponseDto> updatesComment( @PathVariable("commentId") Long commentId,
                                             @RequestBody @Valid CommentRequestDto commentRequestDto){
         log.debug("Received request to update comment");
-        return new ResponseEntity<>(commentService.updateComment(postId, commentId, commentRequestDto),HttpStatus.OK);
+        return new ResponseEntity<>(commentService.updateComment( commentId, commentRequestDto),HttpStatus.OK);
     }
 
     @ApiOperation(value = "Deletes comment on post")
@@ -72,10 +82,10 @@ public class CommentController {
             @ApiResponse(code = 401, message = "You are not authenticated"),
             @ApiResponse(code = 403, message = "You are not authorized")
     })
-    @DeleteMapping("/{postId}/deleteComment/{commentId}")
+    @DeleteMapping("/deleteComment/{commentId}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<GenericResponse> deleteComment(@PathVariable("postId") Long postId, @PathVariable("commentId") Long commentId) {
-        commentService.deleteComment(postId, commentId);
+    public ResponseEntity<GenericResponse> deleteComment( @PathVariable("commentId") Long commentId ) {
+        commentService.deleteComment( commentId );
         return new ResponseEntity<>(GenericResponse.buildGenericResponse("Comment Deleted Successfully"),HttpStatus.OK);
     }
 
