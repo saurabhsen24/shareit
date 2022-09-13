@@ -19,47 +19,45 @@ export class CommentService {
     return this.http
       .get<CommentResponse[]>(`${this.commentApi}/${postId}/comments`)
       .pipe(
-        tap((res) => console.log(res)),
+        tap((res) => console.debug(res)),
         catchError((errResponse) => throwError(errResponse.error))
       );
   }
 
   postComment(postId: Number, commetRequest: CommentRequest) {
     return this.http
-      .post<GenericResponse>(
+      .post<CommentResponse>(
         `${this.commentApi}/${postId}/createComment`,
         commetRequest
       )
       .pipe(
-        tap((res) => console.log(res)),
+        tap((res) => console.debug(res)),
         catchError((errResponse) => throwError(errResponse.error))
       );
   }
 
-  deleteComment(postId: Number, commentId: Number) {
+  deleteComment(commentId: Number) {
     return this.http
-      .delete<GenericResponse>(
-        `${this.commentApi}/${postId}/deleteComment/${commentId}`
-      )
+      .delete<GenericResponse>(`${this.commentApi}/deleteComment/${commentId}`)
       .pipe(
-        tap((res) => console.log(res)),
+        tap((res) => console.debug(res)),
         catchError((errResponse) => throwError(errResponse.error))
       );
   }
 
-  updateComment(
-    postId: Number,
-    commentId: Number,
-    commentRequest: CommentRequest
-  ) {
+  updateComment(commentId: Number, commentRequest: CommentRequest) {
     return this.http
-      .patch(
-        `${this.commentApi}/${postId}/editComment/${commentId}`,
+      .patch<CommentResponse>(
+        `${this.commentApi}/editComment/${commentId}`,
         commentRequest
       )
       .pipe(
         tap((res) => console.log(res)),
         catchError((errResponse) => throwError(errResponse.error))
       );
+  }
+
+  getComment(commentId: Number) {
+    return this.http.get<CommentResponse>(`${this.commentApi}/${commentId}`);
   }
 }

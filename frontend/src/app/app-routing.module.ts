@@ -4,6 +4,7 @@ import { ForgetPasswordComponent } from './auth/forget-password/forget-password.
 import { LoginComponent } from './auth/login/login.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { SignupComponent } from './auth/signup/signup.component';
+import { CommentComponent } from './pages/comment/comment.component';
 import { CreatePostComponent } from './pages/create-post/create-post.component';
 import { PostComponent } from './pages/post/post.component';
 import { ViewPostComponent } from './pages/view-post/view-post.component';
@@ -26,6 +27,11 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   { path: 'post/:postId', component: PostComponent, canActivate: [AuthGuard] },
+  {
+    path: 'post/:postId/comment/:commentId',
+    component: CommentComponent,
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({

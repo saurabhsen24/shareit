@@ -19,11 +19,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatDialogModule } from '@angular/material/dialog';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { QuillModule } from 'ngx-quill';
 import { MatBadgeModule } from '@angular/material/badge';
 import { TokenInterceptor } from './shared/interceptors/token.interceptor';
 import { CreatePostComponent } from './pages/create-post/create-post.component';
+import { CommentComponent } from './pages/comment/comment.component';
+import { CommentDialogComponent } from './pages/comment/comment-dialog/comment-dialog.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +39,8 @@ import { CreatePostComponent } from './pages/create-post/create-post.component';
     PostComponent,
     ViewPostComponent,
     CreatePostComponent,
+    CommentComponent,
+    CommentDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,6 +56,7 @@ import { CreatePostComponent } from './pages/create-post/create-post.component';
     MatBadgeModule,
     MatTabsModule,
     MatStepperModule,
+    MatDialogModule,
     QuillModule.forRoot(),
   ],
   providers: [
