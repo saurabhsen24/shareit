@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Constants } from '../constants/Constants';
 import { LoginResponse } from '../models/response/LoginResponse.model';
 import { UserData } from '../models/UserData.model';

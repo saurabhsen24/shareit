@@ -24,7 +24,10 @@
   <mat-card-content>
     <div class="ms-5" [innerHTML]="comment.commentText"></div>
   </mat-card-content>
-  <mat-card-actions class="d-flex justify-content-start mb-2">
+  <mat-card-actions
+    class="d-flex justify-content-start mb-2"
+    *ngIf="currentUserName === comment.userName"
+  >
     <button
       mat-mini-fab
       color="primary"

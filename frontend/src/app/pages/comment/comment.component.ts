@@ -8,6 +8,7 @@ import { CommentResponse } from 'src/app/shared/models/response/CommentResponse.
 import { ErrorResponse } from 'src/app/shared/models/response/ErrorResponse.model';
 import { GenericResponse } from 'src/app/shared/models/response/GenericResponse.model';
 import { CommentService } from 'src/app/shared/services/comment.service';
+import { TokenStorageService } from 'src/app/shared/services/token-storage.service';
 import { CommentDialogComponent } from './comment-dialog/comment-dialog.component';
 
 @Component({
@@ -34,6 +35,8 @@ export class CommentComponent implements OnInit {
   quillConfiguration = Constants.QUILL_CONFIG;
   editorStyle = Constants.EDITOR_STYLE;
 
+  currentUserName = null;
+
   Toast = null;
 
   commentForm = new FormGroup({
@@ -43,10 +46,12 @@ export class CommentComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private commentService: CommentService,
-    private commentDialog: MatDialog
+    private commentDialog: MatDialog,
+    private tokenStorage: TokenStorageService
   ) {}
 
   ngOnInit(): void {
+    this.currentUserName = this.tokenStorage.getUser().userName;
     this.route.params.subscribe((param: Params) => {
       this.postId = +param['postId'];
       this.getAllComments(this.postId);
