@@ -22,4 +22,5 @@ public interface PostService {
     Post findPostByPostId( Long postId );
 
     Integer updateVoteCount(Post post, VoteType voteType);
+
 }

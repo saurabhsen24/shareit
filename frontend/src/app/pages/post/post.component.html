@@ -1,0 +1,73 @@
+<div class="container d-flex justify-content-center">
+  <mat-card class="post-card mt-5">
+    <mat-card-header>
+      <div
+        mat-card-avatar
+        class="post-header-image"
+        style="background-image: url('../../../assets/images/user.png')"
+      ></div>
+      <mat-card-title>{{ post.userName }}</mat-card-title>
+      <mat-card-subtitle>{{ post.postTitle }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p [innerHTML]="post.postDescription"></p>
+    </mat-card-content>
+    <img
+      *ngIf="post.postUrl"
+      mat-card-image
+      src="{{ post.postUrl }}"
+      alt="Comedy photo"
+    />
+
+    <mat-card-actions class="d-flex justify-content-start mb-2">
+      <button
+        mat-mini-fab
+        [color]="post.upVoteColor ? post.upVoteColor : 'primary'"
+        class="ms-3 me-3"
+        matBadge="{{ post.voteCount }}"
+        (click)="vote(post.postId, voteType.UP_VOTE)"
+      >
+        <mat-icon>arrow_upward</mat-icon>
+      </button>
+      <button
+        mat-mini-fab
+        [color]="post.downVoteColor ? post.downVoteColor : 'primary'"
+        class="ms-3 me-3"
+        (click)="vote(post.postId, voteType.DOWN_VOTE)"
+      >
+        <mat-icon>arrow_downward</mat-icon>
+      </button>
+      <button mat-raised-button class="ms-3 me-3" disabled>
+        <mat-icon>comment</mat-icon> Comments
+      </button>
+      <button mat-raised-button color="primary" class="ms-3">
+        <mat-icon>report</mat-icon> Report
+      </button>
+      <button
+        *ngIf="currentUserName === post.userName"
+        mat-mini-fab
+        color="primary"
+        class="ms-2"
+        [matMenuTriggerFor]="menu"
+      >
+        <mat-icon>more_horiz</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="/updatePost/{{ post.postId }}">
+          <mat-icon>edit</mat-icon>
+          <span>Update</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="deletePost(+post.postId)">
+          <mat-icon>delete</mat-icon>
+          <span>Delete</span>
+        </button>
+      </mat-menu>
+    </mat-card-actions>
+
+    <app-comment
+      [postId]="postId"
+      (notify)="showNotification($event)"
+    ></app-comment>
+  </mat-card>
+</div>

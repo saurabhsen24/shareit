@@ -55,6 +55,7 @@ public class PostController {
             @ApiResponse(code = 401, message = "You are not authenticated")
     })
     @GetMapping("/{postId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<PostResponseDto> getPost(@PathVariable("postId") Long postId){
         log.debug("Received post get request {}", postId);
         return new ResponseEntity<>(postService.getPostById(postId), HttpStatus.OK);
