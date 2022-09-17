@@ -20,13 +20,19 @@
       <mat-card-actions class="d-flex justify-content-start mb-2">
         <button
           mat-mini-fab
-          color="primary"
+          [color]="post.upVoteColor ? post.upVoteColor : 'primary'"
           class="ms-2 me-2"
           matBadge="{{ post.voteCount }}"
+          (click)="vote(post.postId, voteType.UP_VOTE)"
         >
           <mat-icon>arrow_upward</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="ms-2 me-2">
+        <button
+          mat-mini-fab
+          [color]="post.downVoteColor ? post.downVoteColor : 'primary'"
+          class="ms-2 me-2"
+          (click)="vote(post.postId, voteType.DOWN_VOTE)"
+        >
           <mat-icon>arrow_downward</mat-icon>
         </button>
         <a
@@ -41,6 +47,7 @@
           <mat-icon>report</mat-icon> Report
         </button>
         <button
+          *ngIf="currentUserName === post.userName"
           mat-mini-fab
           color="primary"
           class="ms-2"

@@ -1,6 +1,7 @@
 package com.shareit.service.impl;
 
 import com.shareit.dto.projection.PostProjection;
+import com.shareit.dto.projection.VoteProjection;
 import com.shareit.dto.request.PostRequestDto;
 import com.shareit.dto.response.PostResponseDto;
 import com.shareit.entities.Post;
@@ -17,13 +18,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,6 +35,7 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private UserService userService;
+
 
     @Override
     public void createPost(PostRequestDto postRequestDto) {
@@ -60,14 +61,34 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<PostResponseDto> getAllPosts() {
         log.debug("Getting all the posts from db");
-        return postRepository.findAllPosts().stream().map(postProjection -> PostResponseDto.from(postProjection))
+        List<PostProjection> posts = postRepository.findAllPosts();
+
+        if( JwtHelper.isAnonymousUser() ) {
+            return posts.stream().map(post -> PostResponseDto.from(post)).collect(Collectors.toList());
+        }
+
+        List<Long> postIds = posts.stream().map(post -> post.getPostId()).collect(Collectors.toList());
+
+        List<VoteProjection> usersWhoLikedPost = postRepository.findAllUsersWhoLikedPost(postIds);
+
+        Map<String,List<VoteProjection>> postLikedByUsers = usersWhoLikedPost.stream()
+                .collect(Collectors.groupingBy(VoteProjection::getUserName));
+
+
+        return posts.stream().map(post ->
+                PostResponseDto.from(post, Utils.checkIfUserVotedThePost(postLikedByUsers, post.getPostId())))
                 .collect(Collectors.toList());
     }
 
     @Override
     public PostResponseDto getPostById(Long postId) {
         PostProjection post = postRepository.findPost( postId );
-        return PostResponseDto.from(post);
+        List<VoteProjection> usersWhoLikedPost = postRepository.findAllUsersWhoLikedPost(Collections.singletonList(postId));
+
+        Map<String,List<VoteProjection>> postLikedByUsers = usersWhoLikedPost.stream()
+                .collect(Collectors.groupingBy(VoteProjection::getUserName));
+
+        return PostResponseDto.from(post, Utils.checkIfUserVotedThePost(postLikedByUsers, post.getPostId()));
     }
 
     @Override
@@ -142,4 +163,5 @@ public class PostServiceImpl implements PostService {
 
         return post.getVoteCount();
     }
+
 }

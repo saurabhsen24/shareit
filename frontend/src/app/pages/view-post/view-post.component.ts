@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { VoteType } from 'src/app/shared/constants/VoteType';
 import { Post } from 'src/app/shared/models/Post.model';
 import { ErrorResponse } from 'src/app/shared/models/response/ErrorResponse.model';
 import { GenericResponse } from 'src/app/shared/models/response/GenericResponse.model';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { PostService } from 'src/app/shared/services/post.service';
+import { SharedService } from 'src/app/shared/services/shared.service';
+import { TokenStorageService } from 'src/app/shared/services/token-storage.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -15,19 +18,27 @@ import Swal from 'sweetalert2';
 export class ViewPostComponent implements OnInit {
   posts: Post[] = [];
 
+  voteType = VoteType;
+
+  currentUserName = '';
+
   constructor(
     private postService: PostService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private tokenStorage: TokenStorageService,
+    private sharedService: SharedService
   ) {}
 
   ngOnInit() {
+    this.currentUserName = this.tokenStorage.getUser()?.userName;
     this.getAllPosts();
   }
 
   getAllPosts() {
     this.postService.getAllPosts().subscribe(
       (postData: Post[]) => {
+        postData.map((post) => this.sharedService.changeButtonColor(post));
         this.posts = postData;
       },
       (err: ErrorResponse) => {
@@ -37,6 +48,9 @@ export class ViewPostComponent implements OnInit {
   }
 
   deletePost(postId: Number) {
+    const newPosts = this.posts.filter((post) => post.postId !== postId);
+    this.posts = newPosts;
+
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -63,5 +77,9 @@ export class ViewPostComponent implements OnInit {
 
   updatePost(postId: Number) {
     this.router.navigate(['posts', postId]);
+  }
+
+  vote(postId: Number, voteType: VoteType) {
+    this.sharedService.vote(postId, voteType, this.posts);
   }
 }

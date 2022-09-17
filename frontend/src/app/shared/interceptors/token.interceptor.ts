@@ -5,10 +5,9 @@ import {
   HttpEvent,
   HttpInterceptor,
 } from '@angular/common/http';
-import { catchError, Observable, of, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { UserData } from '../models/UserData.model';
 import { TokenStorageService } from '../services/token-storage.service';
-import { AuthService } from '../services/auth.service';
 const TOKEN_HEADER_KEY = 'Authorization';
 const BEARER_TOKEN = 'Bearer';
 
@@ -16,19 +15,13 @@ const BEARER_TOKEN = 'Bearer';
 export class TokenInterceptor implements HttpInterceptor {
   isRefreshing = false;
 
-  constructor(
-    private tokenStorage: TokenStorageService,
-    private authService: AuthService
-  ) {}
+  constructor(private tokenStorage: TokenStorageService) {}
 
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    if (
-      request.url.indexOf('auth') !== -1 ||
-      request.url.indexOf('/posts') !== -1
-    ) {
+    if (request.url.indexOf('auth') !== -1) {
       return next.handle(request);
     }
 

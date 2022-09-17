@@ -18,7 +18,7 @@ public class Vote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long voteId;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column( name = "vote_type" )
     private VoteType voteType;
 

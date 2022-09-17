@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Constants } from 'src/app/shared/constants/Constants';
 import { Post } from 'src/app/shared/models/Post.model';
 import { ErrorResponse } from 'src/app/shared/models/response/ErrorResponse.model';
 import { GenericResponse } from 'src/app/shared/models/response/GenericResponse.model';
@@ -14,31 +15,8 @@ import Swal from 'sweetalert2';
   styleUrls: ['./create-post.component.css'],
 })
 export class CreatePostComponent implements OnInit {
-  editorStyle = {
-    height: '100px',
-  };
-
-  quillConfiguration = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-      ['blockquote', 'code-block'],
-
-      [{ header: 1 }, { header: 2 }], // custom button values
-      [{ list: 'ordered' }, { list: 'bullet' }],
-      [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
-      [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
-      [{ direction: 'rtl' }], // text direction
-
-      [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-      [{ font: [] }],
-      [{ align: [] }],
-
-      ['clean'], // remove formatting button
-    ],
-  };
+  editorStyle = Constants.EDITOR_STYLE;
+  quillConfiguration = Constants.QUILL_CONFIG;
 
   postHeader = 'Create';
 
@@ -85,6 +63,7 @@ export class CreatePostComponent implements OnInit {
           (response: GenericResponse) => {
             this.messageService.showMessage('success', response.message);
             this.addPostForm.reset();
+            this.router.navigateByUrl('/');
           },
           (errResponse: ErrorResponse) => {
             this.messageService.showMessage('error', errResponse.message);
@@ -95,13 +74,13 @@ export class CreatePostComponent implements OnInit {
         (response: GenericResponse) => {
           this.messageService.showMessage('success', response.message);
           this.addPostForm.reset();
+          this.router.navigateByUrl('/');
         },
         (errResponse: ErrorResponse) => {
           this.messageService.showMessage('error', errResponse.message);
         }
       );
     }
-    this.router.navigateByUrl('/');
   }
 
   discardPost() {
@@ -115,6 +94,7 @@ export class CreatePostComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.addPostForm.reset();
+        this.router.navigateByUrl('/');
       }
     });
   }
