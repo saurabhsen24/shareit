@@ -1,6 +1,7 @@
 package com.shareit.repository;
 
 import com.shareit.dto.projection.PostProjection;
+import com.shareit.dto.projection.VoteProjection;
 import com.shareit.entities.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -32,4 +33,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query(value = "SELECT u.user_name FROM posts p INNER JOIN user u ON p.user_id = u.user_id WHERE p.post_id=:postId",
             nativeQuery = true)
     String findPostCreator(@Param("postId") Long postId);
+
+
+    @Query(value = "SELECT v.post_id as postId,u.user_name as userName, v.vote_type as voteType FROM vote v INNER JOIN " +
+            "user u ON v.user_id = u.user_id WHERE v.post_id IN (:postIds)", nativeQuery = true)
+    List<VoteProjection> findAllUsersWhoLikedPost(@Param("postIds") List<Long> postIds);
+
 }

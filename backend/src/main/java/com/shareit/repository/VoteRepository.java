@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface VoteRepository extends JpaRepository<Vote, Long> {
@@ -17,4 +18,5 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
 
     @Query(value = "SELECT * FROM vote where user_id=:userId AND post_id=:postId",nativeQuery = true)
     Optional<Vote> findByUserIdAndPostId(@Param("userId") Long userId, @Param("postId") Long postId);
+
 }

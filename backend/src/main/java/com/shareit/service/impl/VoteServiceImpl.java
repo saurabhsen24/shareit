@@ -10,6 +10,9 @@ import com.shareit.repository.VoteRepository;
 import com.shareit.service.PostService;
 import com.shareit.service.UserService;
 import com.shareit.service.VoteService;
+import com.shareit.utils.JwtHelper;
+import com.shareit.utils.Utils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,26 +20,32 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class VoteServiceImpl implements VoteService {
 
     @Autowired
     private PostService postService;
-
     @Autowired
     private UserService userService;
     @Autowired
     private VoteRepository voteRepository;
 
     @Override
-    public VoteResponseDto createVote(Long postId, Long userId, VoteRequestDto voteRequestDto) {
+    public VoteResponseDto voteOnPost(Long postId, VoteRequestDto voteRequestDto) {
         Post post = postService.findPostByPostId(postId);
-        User user = userService.getUserById(userId);
+        String userName = JwtHelper.getCurrentLoggedInUsername();
+        User user = userService.getUserByUsername(userName);
 
-        Optional<Vote> voteOptional = voteRepository.findByUserIdAndPostId(userId, postId);
+        Optional<Vote> voteOptional = voteRepository.findByUserIdAndPostId(user.getUserId(), postId);
 
         if( voteOptional.isPresent() ) {
-            throw new BadRequestException("User already voted on a post");
+            return updateVote(post, voteOptional.get(), voteRequestDto);
         }
+
+        return createVote( post, user, voteRequestDto );
+    }
+
+    private VoteResponseDto createVote(Post post, User user, VoteRequestDto voteRequestDto) {
 
         Vote vote = Vote.builder()
                 .post(post)
@@ -49,16 +58,17 @@ public class VoteServiceImpl implements VoteService {
         return VoteResponseDto.buildVoteResponseDto(updatedVoteCount, voteRequestDto.getVoteType());
     }
 
-    @Override
-    public VoteResponseDto updateVote(Long postId, Long userId, VoteRequestDto voteRequestDto) {
 
-        Post post = postService.findPostByPostId(postId);
-        Vote vote = voteRepository.findByUserIdAndPostId(userId, postId).orElseThrow(() ->
-                new BadRequestException("Post or User is Invalid"));
+    private VoteResponseDto updateVote(Post post, Vote vote, VoteRequestDto voteRequestDto) {
+
+        if( vote.getVoteType() == voteRequestDto.getVoteType() ){
+            throw new BadRequestException("User already " + Utils.getVoteTypeMap().get(voteRequestDto.getVoteType())
+                    + " this Post");
+        }
 
         Integer updatedVoteCount = post.getVoteCount();
 
-        if(BooleanUtils.isFalse(vote.getVoteType().equals(voteRequestDto.getVoteType()))) {
+        if(BooleanUtils.isFalse(vote.getVoteType() == voteRequestDto.getVoteType() )) {
             updatedVoteCount = postService.updateVoteCount(post, voteRequestDto.getVoteType());
             vote.setVoteType(voteRequestDto.getVoteType());
             voteRepository.save(vote);
