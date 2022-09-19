@@ -22,6 +22,8 @@ export class ViewPostComponent implements OnInit {
 
   currentUserName = '';
 
+  isLoading = false;
+
   constructor(
     private postService: PostService,
     private messageService: MessageService,
@@ -36,13 +38,25 @@ export class ViewPostComponent implements OnInit {
   }
 
   getAllPosts() {
+    this.isLoading = true;
+
     this.postService.getAllPosts().subscribe(
       (postData: Post[]) => {
-        postData.map((post) => this.sharedService.changeButtonColor(post));
+        postData.map((post) => {
+          this.sharedService.changeButtonColor(post);
+          let videoUrl = this.sharedService.checkIfVideoURLOrImageURL(
+            post.postUrl
+          );
+
+          post.videoUrl = videoUrl;
+        });
         this.posts = postData;
       },
       (err: ErrorResponse) => {
         this.messageService.showMessage('error', err.message);
+      },
+      () => {
+        this.isLoading = false;
       }
     );
   }
@@ -61,6 +75,7 @@ export class ViewPostComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
+        this.isLoading = true;
         const posts = this.posts.filter((post) => post.postId !== postId);
         this.posts = posts;
         this.postService.deletePost(postId).subscribe(
@@ -69,6 +84,9 @@ export class ViewPostComponent implements OnInit {
           },
           (errResponse: ErrorResponse) => {
             this.messageService.showMessage('error', errResponse.message);
+          },
+          () => {
+            this.isLoading = false;
           }
         );
       }

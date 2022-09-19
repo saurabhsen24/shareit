@@ -37,6 +37,8 @@ export class CommentComponent implements OnInit {
 
   currentUserName = null;
 
+  isLoading = false;
+
   Toast = null;
 
   commentForm = new FormGroup({
@@ -54,6 +56,7 @@ export class CommentComponent implements OnInit {
     this.currentUserName = this.tokenStorage.getUser().userName;
     this.route.params.subscribe((param: Params) => {
       this.postId = +param['postId'];
+      this.isLoading = true;
       this.getAllComments(this.postId);
     });
   }
@@ -100,11 +103,15 @@ export class CommentComponent implements OnInit {
           background: '#f27474',
           color: 'white',
         });
+      },
+      () => {
+        this.isLoading = false;
       }
     );
   }
 
   deleteComment(commentId: Number) {
+    this.isLoading = true;
     const newComments = this.comments.filter(
       (comment) => comment.commentId !== commentId
     );
@@ -128,11 +135,15 @@ export class CommentComponent implements OnInit {
           background: '#f27474',
           color: 'white',
         });
+      },
+      () => {
+        this.isLoading = false;
       }
     );
   }
 
   openEditCommentDialog(commentId: Number) {
+    this.isLoading = true;
     this.commentService.getComment(commentId).subscribe(
       (comment: CommentResponse) => {
         const dialogRef = this.commentDialog.open(CommentDialogComponent, {
@@ -150,6 +161,9 @@ export class CommentComponent implements OnInit {
           background: '#f27474',
           color: 'white',
         });
+      },
+      () => {
+        this.isLoading = false;
       }
     );
   }

@@ -56,6 +56,10 @@ export class PostComponent implements OnInit {
     this.postService.getPost(postId).subscribe(
       (post: Post) => {
         this.sharedService.changeButtonColor(post);
+        let videoUrl = this.sharedService.checkIfVideoURLOrImageURL(
+          post.postUrl
+        );
+        post.videoUrl = videoUrl;
         this.post = post;
       },
       (errResponse: ErrorResponse) => {

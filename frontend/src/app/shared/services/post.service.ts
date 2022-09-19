@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -30,8 +30,24 @@ export class PostService {
   }
 
   createPost(postRequest: PostRequest) {
+    const formData = new FormData();
+
+    let postReq = {
+      postTitle: postRequest.postTitle,
+      postDescription: postRequest.postDescription,
+    };
+
+    let file = postRequest.file;
+
+    const blob = new Blob([JSON.stringify(postReq)], {
+      type: 'application/json',
+    });
+
+    formData.append('postRequest', blob);
+    formData.append('file', file);
+
     return this.http
-      .post<GenericResponse>(`${this.postApi}/createPost`, postRequest)
+      .post<GenericResponse>(`${this.postApi}/createPost`, formData)
       .pipe(
         tap((res) => console.log(res)),
         catchError((errResponse) => throwError(errResponse.error))
@@ -46,8 +62,24 @@ export class PostService {
   }
 
   updatePost(postId: Number, postRequest: PostRequest) {
+    const formData = new FormData();
+
+    let postReq = {
+      postTitle: postRequest.postTitle,
+      postDescription: postRequest.postDescription,
+    };
+
+    let file = postRequest.file;
+
+    const blob = new Blob([JSON.stringify(postReq)], {
+      type: 'application/json',
+    });
+
+    formData.append('postRequest', blob);
+    formData.append('file', file);
+
     return this.http
-      .put<GenericResponse>(`${this.postApi}/updatePost/${postId}`, postRequest)
+      .put<GenericResponse>(`${this.postApi}/updatePost/${postId}`, formData)
       .pipe(
         tap((response) => console.log(response)),
         catchError((errResponse) => throwError(errResponse.error))

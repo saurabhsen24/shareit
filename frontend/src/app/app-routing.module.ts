@@ -11,7 +11,7 @@ import { ViewPostComponent } from './pages/view-post/view-post.component';
 import { AuthGuard } from './shared/gaurds/auth.guard';
 
 const routes: Routes = [
-  { path: '', component: ViewPostComponent },
+  { path: '', component: ViewPostComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'forgetPassword', component: ForgetPasswordComponent },

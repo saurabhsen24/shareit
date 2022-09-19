@@ -10,4 +10,5 @@ export interface Post {
   voteType: VoteType;
   upVoteColor: string;
   downVoteColor: string;
+  videoUrl?: boolean;
 }

@@ -1,3 +1,7 @@
+<div class="d-flex justify-content-center">
+  <mat-spinner color="accent" *ngIf="isLoading"></mat-spinner>
+</div>
+
 <form [formGroup]="commentForm" (ngSubmit)="submitComment()">
   <quill-editor
     class="ql-container"
