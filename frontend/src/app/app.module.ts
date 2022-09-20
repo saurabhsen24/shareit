@@ -33,6 +33,8 @@ import { CommentDialogComponent } from './pages/comment/comment-dialog/comment-d
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { UserComponent } from './pages/user/user.component';
+import { UploadPicComponent } from './pages/user/upload-pic/upload-pic.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     CreatePostComponent,
     CommentComponent,
     CommentDialogComponent,
+    UserComponent,
+    UploadPicComponent,
   ],
   imports: [
     BrowserModule,

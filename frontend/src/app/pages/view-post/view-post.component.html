@@ -1,4 +1,12 @@
-<mat-progress-bar mode="indeterminate" color="accent" *ngIf="isLoading"></mat-progress-bar>
+<mat-progress-bar
+  mode="indeterminate"
+  color="accent"
+  *ngIf="isLoading && !username"
+>
+</mat-progress-bar>
+
+<mat-spinner color="accent" *ngIf="isLoading && username"></mat-spinner>
+
 <div class="container">
   <div *ngFor="let post of posts; let i = index">
     <mat-card class="post-card offset-md-3 mt-5">
@@ -8,7 +16,9 @@
           class="post-header-image"
           style="background-image: url('../../../assets/images/user.png')"
         ></div>
-        <mat-card-title>{{ post.userName }}</mat-card-title>
+        <mat-card-title class="user" routerLink="/user/{{ post.userName }}">
+          {{ post.userName }}
+        </mat-card-title>
         <mat-card-subtitle>{{ post.postTitle }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content class="mb-4">

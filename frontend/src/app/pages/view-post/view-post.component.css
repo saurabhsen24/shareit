@@ -7,3 +7,7 @@
 .post-header-image {
   background-size: cover;
 }
+
+.user {
+  cursor: pointer;
+}

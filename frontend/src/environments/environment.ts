@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   API_URL: 'http://localhost:8080',
+  defaultUserProfile: 'https://www.w3schools.com/howto/img_avatar.png',
 };
 
 /*

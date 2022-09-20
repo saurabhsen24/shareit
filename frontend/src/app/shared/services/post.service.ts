@@ -29,6 +29,13 @@ export class PostService {
     );
   }
 
+  getAllPostsByUser(username: string){
+    return this.http.get<Post[]>(`${this.postApi}/posts/${username}`).pipe(
+      tap((response) => console.log(response)),
+      catchError((errResponse) => throwError(errResponse.error))
+    );
+  }
+
   createPost(postRequest: PostRequest) {
     const formData = new FormData();
 

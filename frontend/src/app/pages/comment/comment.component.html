@@ -1,7 +1,5 @@
-<div class="d-flex justify-content-center">
-  <mat-spinner color="accent" *ngIf="isLoading"></mat-spinner>
-</div>
-
+<mat-progress-bar mode="indeterminate" color="accent" *ngIf="isLoading">
+</mat-progress-bar>
 <form [formGroup]="commentForm" (ngSubmit)="submitComment()">
   <quill-editor
     class="ql-container"

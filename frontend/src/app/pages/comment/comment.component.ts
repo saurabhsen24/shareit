@@ -66,6 +66,8 @@ export class CommentComponent implements OnInit {
       text: this.commentForm.get('commentControl').value,
     };
 
+    this.isLoading = true;
+
     this.commentService.postComment(this.postId, commentReq).subscribe(
       (comment: CommentResponse) => {
         this.comments.push(comment);
@@ -86,6 +88,9 @@ export class CommentComponent implements OnInit {
           background: '#f27474',
           color: 'white',
         });
+      },
+      () => {
+        this.isLoading = false;
       }
     );
   }
@@ -150,6 +155,7 @@ export class CommentComponent implements OnInit {
           data: comment,
         });
         dialogRef.afterClosed().subscribe((dataComment: CommentResponse) => {
+          this.isLoading = true;
           this.updateComment(dataComment);
         });
       },
@@ -177,6 +183,8 @@ export class CommentComponent implements OnInit {
     updatedComments[index] = updatedComment;
 
     this.comments = updatedComments;
+
+    this.isLoading = false;
 
     this.notify.emit({
       icon: 'success',
