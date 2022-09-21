@@ -1,5 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { GenericResponse } from 'src/app/shared/models/response/GenericResponse.model';
+import { UserService } from 'src/app/shared/services/user.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -9,11 +11,12 @@ import { environment } from 'src/environments/environment';
 })
 export class UploadPicComponent implements OnInit {
   photoPreviewUrl = '';
-  file: File;
+  file: File = null;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public profilePic: string,
-    private dialogRef: MatDialogRef<UploadPicComponent>
+    private dialogRef: MatDialogRef<UploadPicComponent>,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -23,7 +26,9 @@ export class UploadPicComponent implements OnInit {
   }
 
   savePhoto() {
-    this.dialogRef.close({ file: this.file });
+    this.userService.uploadPic(this.file).subscribe((data: GenericResponse) => {
+      this.dialogRef.close({ data: data.message });
+    });
   }
 
   onChange(event) {

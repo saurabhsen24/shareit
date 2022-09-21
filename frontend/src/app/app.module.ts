@@ -35,6 +35,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { UserComponent } from './pages/user/user.component';
 import { UploadPicComponent } from './pages/user/upload-pic/upload-pic.component';
+import { UpdateUserComponent } from './pages/user/update-user/update-user.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { UploadPicComponent } from './pages/user/upload-pic/upload-pic.component
     CommentDialogComponent,
     UserComponent,
     UploadPicComponent,
+    UpdateUserComponent,
   ],
   imports: [
     BrowserModule,

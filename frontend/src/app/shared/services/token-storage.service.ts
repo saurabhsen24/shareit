@@ -9,6 +9,7 @@ import { UserData } from '../models/UserData.model';
 })
 export class TokenStorageService {
   public authStatusListener = new Subject<boolean>();
+  public userNameListner = new Subject<string>();
 
   constructor() {}
 

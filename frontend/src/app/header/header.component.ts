@@ -23,6 +23,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.tokenStorage.authStatusListener.subscribe((data) => {
       this.isLoggedIn = data;
     });
+
+    this.tokenStorage.userNameListner.subscribe((userNameData: string) => {
+      this.username = userNameData;
+    });
   }
 
   autoLogin() {

@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   API_URL: 'http://localhost:8080',
-  defaultUserProfile: 'https://www.w3schools.com/howto/img_avatar.png',
+  defaultUserProfile:
+    'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg',
 };
 
 /*

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import { LoginRequest } from 'src/app/shared/models/requests/LoginRequest.model';
 import { ErrorResponse } from 'src/app/shared/models/response/ErrorResponse.model';
 import { LoginResponse } from 'src/app/shared/models/response/LoginResponse.model';
@@ -54,7 +55,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.loginForm.value).subscribe(
       (loginResponse: LoginResponse) => {
         this.tokenStorage.saveUser(loginResponse);
-
+        this.tokenStorage.userNameListner.next(loginResponse.userName);
         this.router.navigateByUrl('/');
         this.loginForm.reset();
       },
@@ -66,6 +67,7 @@ export class LoginComponent implements OnInit {
           background: '#f27474',
           color: 'white',
         });
+        this.isLoading = false;
       },
       () => {
         this.isLoading = false;

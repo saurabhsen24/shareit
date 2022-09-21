@@ -17,21 +17,21 @@ export class PostService {
 
   getPost(postId: Number) {
     return this.http.get<Post>(`${this.postApi}/${postId}`).pipe(
-      tap((res) => console.log(res)),
+      tap((res) => console.debug(res)),
       catchError((errResponse) => throwError(errResponse.error))
     );
   }
 
   getAllPosts() {
     return this.http.get<Post[]>(`${this.postApi}/posts`).pipe(
-      tap((response) => console.log(response)),
+      tap((response) => console.debug(response)),
       catchError((errResponse) => throwError(errResponse.error))
     );
   }
 
-  getAllPostsByUser(username: string){
+  getAllPostsByUser(username: string) {
     return this.http.get<Post[]>(`${this.postApi}/posts/${username}`).pipe(
-      tap((response) => console.log(response)),
+      tap((response) => console.debug(response)),
       catchError((errResponse) => throwError(errResponse.error))
     );
   }
@@ -63,7 +63,7 @@ export class PostService {
 
   deletePost(postId: Number) {
     return this.http.delete<GenericResponse>(`${this.postApi}/${postId}`).pipe(
-      tap((res) => console.log(res)),
+      tap((res) => console.debug(res)),
       catchError((errResponse) => throwError(errResponse.error))
     );
   }

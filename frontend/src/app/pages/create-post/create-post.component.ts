@@ -46,7 +46,6 @@ export class CreatePostComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       this.postId = +params.get('postId');
       if (this.postId) {
-        this.isLoading = true;
         this.postHeader = 'Update';
         this.getPost(this.postId);
       }
@@ -69,15 +68,14 @@ export class CreatePostComponent implements OnInit {
         .updatePost(this.postId, this.addPostForm.value)
         .subscribe(
           (response: GenericResponse) => {
+            this.isLoading = false;
             this.messageService.showMessage('success', response.message);
             this.addPostForm.reset();
             this.router.navigateByUrl('/');
           },
           (errResponse: ErrorResponse) => {
-            this.messageService.showMessage('error', errResponse.message);
-          },
-          () => {
             this.isLoading = false;
+            this.messageService.showMessage('error', errResponse.message);
           }
         );
     } else {
@@ -124,7 +122,9 @@ export class CreatePostComponent implements OnInit {
   }
 
   getPost(postId: Number) {
+    this.isLoading = true;
     this.postService.getPost(postId).subscribe((postData: Post) => {
+      this.isLoading = false;
       this.addPostForm.patchValue({
         postTitle: postData.postTitle,
         postDescription: postData.postDescription,

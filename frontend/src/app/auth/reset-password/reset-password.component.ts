@@ -69,6 +69,7 @@ export class ResetPasswordComponent implements OnInit {
           background: '#f27474',
           color: 'white',
         });
+        this.isLoading = false;
       },
       () => {
         this.isLoading = false;
