@@ -27,8 +27,18 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "p.post_desc as postDescription," +
             "p.post_url as postUrl, p.vote_count as voteCount , u.user_name as userName " +
             "FROM posts p INNER JOIN user u ON" +
-            " p.user_id = u.user_id",nativeQuery = true)
+            " p.user_id = u.user_id ORDER BY p.created_on DESC",nativeQuery = true)
     List<PostProjection> findAllPosts();
+
+
+    @Query(value = "SELECT p.post_id as postId ," +
+            "p.post_title as postTitle," +
+            "p.post_desc as postDescription," +
+            "p.post_url as postUrl, p.vote_count as voteCount , u.user_name as userName " +
+            "FROM posts p INNER JOIN user u ON " +
+            "p.user_id = u.user_id WHERE u.user_name=:userName " +
+            "ORDER BY p.created_on DESC" ,nativeQuery = true)
+    List<PostProjection> findAllPostsByUser(@Param("userName") String userName);
 
     @Query(value = "SELECT u.user_name FROM posts p INNER JOIN user u ON p.user_id = u.user_id WHERE p.post_id=:postId",
             nativeQuery = true)

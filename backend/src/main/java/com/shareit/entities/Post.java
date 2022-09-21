@@ -1,7 +1,6 @@
 package com.shareit.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.shareit.dto.request.PostRequestDto;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -25,7 +24,6 @@ public class Post {
 
     @Column( name = "post_title", nullable = false )
     private String postTitle;
-
     @Lob
     @Column( name = "post_desc" )
     private String postDescription;
@@ -45,7 +43,7 @@ public class Post {
     private Timestamp postUpdatedOn;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn( name = "user_id",nullable = false )
+    @JoinColumn( name = "user_id" , nullable = false )
     @JsonIgnoreProperties(value = "posts")
     private User user;
 
@@ -56,7 +54,6 @@ public class Post {
     @OneToMany(mappedBy = "post", orphanRemoval = true)
     @JsonIgnoreProperties( value = "post" )
     private List<Vote> votes;
-
 
     public void addComment(Comment comment) {
         commentList.add(comment);
@@ -80,6 +77,6 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post { postTitle = "+ postTitle + ", postDescription = " + postDescription + ", postUrl = " + postUrl + "}";
+        return "Post { postTitle = "+ postTitle + ", postDescription = " + postDescription +  "}";
     }
 }

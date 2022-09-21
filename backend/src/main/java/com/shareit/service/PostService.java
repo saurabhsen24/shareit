@@ -9,9 +9,11 @@ import java.util.List;
 
 public interface PostService {
 
-    void createPost(PostRequestDto postRequestDto);
+    void createPost(PostRequestDto postRequestDto );
 
     List<PostResponseDto> getAllPosts();
+
+    List<PostResponseDto> getAllPostsByUser(String userName);
 
     PostResponseDto getPostById( Long postId );
 
