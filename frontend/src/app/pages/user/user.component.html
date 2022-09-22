@@ -15,6 +15,7 @@
               height="300px"
             />
             <button
+              *ngIf="loggedInUser ? loggedInUser === username : false"
               mat-mini-fab
               color="basic"
               class="float-end"
@@ -46,11 +47,12 @@
               <mat-divider></mat-divider>
             </div>
 
-            <div *ngIf="userData.worksAt">
+            <div *ngIf="userData.college">
               <mat-list-item>
                 <mat-icon class="text-secondary">school</mat-icon>
                 <span class="ps-3 small">
-                  Studied At <b>Education Instituition</b>
+                  Studied At Education Instituition
+                  <b>{{ userData.college }}</b>
                 </span>
               </mat-list-item>
 

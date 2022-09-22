@@ -64,8 +64,16 @@
         >
           <mat-icon>comment</mat-icon> Comments
         </a>
-        <button mat-raised-button color="primary" class="ms-2 me-2">
-          <mat-icon>report</mat-icon> Report
+        <button
+          mat-raised-button
+          color="primary"
+          class="ms-2 me-2"
+          routerLink="/post/{{ post.postId }}"
+        >
+          <mat-icon>
+            <span class="material-symbols-outlined"> visibility </span>
+          </mat-icon>
+          View
         </button>
         <button
           *ngIf="currentUserName === post.userName"
