@@ -10,6 +10,7 @@ Its a social media app created using Spring boot and Angular
 
 - Users can do login or signup.
 - Users can update their details and also have forget password option.
+- Users will receive OTP from email during reseting their password.
 - Users can create/update/delete posts.
 - Users can up vote or down vote posts.
 - Users can upload image/video in their post.
