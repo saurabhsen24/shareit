@@ -7,11 +7,13 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { CommentComponent } from './pages/comment/comment.component';
 import { CreatePostComponent } from './pages/create-post/create-post.component';
 import { PostComponent } from './pages/post/post.component';
+import { UpdateUserComponent } from './pages/user/update-user/update-user.component';
+import { UserComponent } from './pages/user/user.component';
 import { ViewPostComponent } from './pages/view-post/view-post.component';
 import { AuthGuard } from './shared/gaurds/auth.guard';
 
 const routes: Routes = [
-  { path: '', component: ViewPostComponent },
+  { path: '', component: ViewPostComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'forgetPassword', component: ForgetPasswordComponent },
@@ -30,6 +32,16 @@ const routes: Routes = [
   {
     path: 'post/:postId/comment/:commentId',
     component: CommentComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'user/:username',
+    component: UserComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'user/:username/update',
+    component: UpdateUserComponent,
     canActivate: [AuthGuard],
   },
 ];

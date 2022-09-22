@@ -20,8 +20,15 @@ export class CreatePostComponent implements OnInit {
 
   postHeader = 'Create';
 
+  isFileUploaded = false;
+
+  file: File = null;
+
+  isLoading = false;
+
   addPostForm: FormGroup = new FormGroup({
     postTitle: new FormControl('', Validators.required),
+    file: new FormControl(''),
     postDescription: new FormControl('', Validators.required),
     postUrl: new FormControl(''),
   });
@@ -40,15 +47,13 @@ export class CreatePostComponent implements OnInit {
       this.postId = +params.get('postId');
       if (this.postId) {
         this.postHeader = 'Update';
+        this.getPost(this.postId);
       }
-      this.postService.getPost(this.postId).subscribe((postData: Post) => {
-        this.addPostForm.patchValue({
-          postTitle: postData.postTitle,
-          postDescription: postData.postDescription,
-          postUrl: postData.postUrl,
-        });
-      });
     });
+  }
+
+  dummy() {
+    console.log(this.addPostForm.value);
   }
 
   onSubmit() {
@@ -56,16 +61,20 @@ export class CreatePostComponent implements OnInit {
       return;
     }
 
+    this.isLoading = true;
+
     if (this.postId) {
       this.postService
         .updatePost(this.postId, this.addPostForm.value)
         .subscribe(
           (response: GenericResponse) => {
+            this.isLoading = false;
             this.messageService.showMessage('success', response.message);
             this.addPostForm.reset();
             this.router.navigateByUrl('/');
           },
           (errResponse: ErrorResponse) => {
+            this.isLoading = false;
             this.messageService.showMessage('error', errResponse.message);
           }
         );
@@ -78,8 +87,21 @@ export class CreatePostComponent implements OnInit {
         },
         (errResponse: ErrorResponse) => {
           this.messageService.showMessage('error', errResponse.message);
+        },
+        () => {
+          this.isLoading = false;
         }
       );
+    }
+  }
+
+  onChange(event) {
+    if (event.target.files.length > 0) {
+      this.file = event.target.files[0];
+      this.isFileUploaded = true;
+      this.addPostForm.patchValue({
+        file: this.file,
+      });
     }
   }
 
@@ -96,6 +118,18 @@ export class CreatePostComponent implements OnInit {
         this.addPostForm.reset();
         this.router.navigateByUrl('/');
       }
+    });
+  }
+
+  getPost(postId: Number) {
+    this.isLoading = true;
+    this.postService.getPost(postId).subscribe((postData: Post) => {
+      this.isLoading = false;
+      this.addPostForm.patchValue({
+        postTitle: postData.postTitle,
+        postDescription: postData.postDescription,
+        postUrl: postData.postUrl,
+      });
     });
   }
 }

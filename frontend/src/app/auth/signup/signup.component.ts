@@ -14,6 +14,7 @@ import { MessageService } from 'src/app/shared/services/message.service';
 export class SignupComponent implements OnInit {
   signupForm: FormGroup;
   successResponse: GenericResponse;
+  isLoading = false;
 
   constructor(
     private authService: AuthService,
@@ -43,6 +44,8 @@ export class SignupComponent implements OnInit {
       return;
     }
 
+    this.isLoading = true;
+
     this.authService.signup(this.signupForm.value).subscribe(
       (response: GenericResponse) => {
         console.log(response);
@@ -58,8 +61,10 @@ export class SignupComponent implements OnInit {
           background: '#f27474',
           color: 'white',
         });
+        this.isLoading = false;
       },
       () => {
+        this.isLoading = false;
         Toast.fire({
           icon: 'success',
           iconColor: 'white',

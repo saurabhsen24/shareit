@@ -3,20 +3,21 @@ package com.shareit.utils;
 import com.google.gson.Gson;
 import com.shareit.dto.projection.VoteProjection;
 import com.shareit.enums.VoteType;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.util.CollectionUtils;
 
 import java.security.SecureRandom;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
-
+@NoArgsConstructor( access = AccessLevel.PRIVATE )
 public class Utils {
 
     public static Gson gson;
 
     private static Map<VoteType,String> voteTypeMap;
+
+    private static Set<String> extensionList;
 
     static {
         gson = new Gson();
@@ -24,6 +25,14 @@ public class Utils {
 
         voteTypeMap.put(VoteType.UP_VOTE, "Up Voted");
         voteTypeMap.put(VoteType.DOWN_VOTE, "Down Voted");
+
+        extensionList = new HashSet<>();
+
+        extensionList.add(".png");
+        extensionList.add(".jpeg");
+        extensionList.add(".jpg");
+        extensionList.add(".mp4");
+
     }
 
     public static String getOTP() {
@@ -51,6 +60,8 @@ public class Utils {
     }
 
     public static Map<VoteType,String> getVoteTypeMap(){
-        return voteTypeMap;
+        return Collections.unmodifiableMap(voteTypeMap);
     }
+
+    public static Set<String> getExtensionList() { return Collections.unmodifiableSet(extensionList); }
 }

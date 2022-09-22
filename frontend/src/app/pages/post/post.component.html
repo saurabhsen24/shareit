@@ -12,12 +12,19 @@
     <mat-card-content>
       <p [innerHTML]="post.postDescription"></p>
     </mat-card-content>
-    <img
-      *ngIf="post.postUrl"
-      mat-card-image
-      src="{{ post.postUrl }}"
-      alt="Comedy photo"
-    />
+
+    <div *ngIf="post.postUrl.length !== 0">
+      <img
+        *ngIf="!post.videoUrl"
+        mat-card-image
+        src="{{ post.postUrl }}"
+        alt="Post Image"
+      />
+      <video *ngIf="post.videoUrl" mat-card-image controls>
+        <source src="{{ post.postUrl }}" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
 
     <mat-card-actions class="d-flex justify-content-start mb-2">
       <button
@@ -40,8 +47,16 @@
       <button mat-raised-button class="ms-3 me-3" disabled>
         <mat-icon>comment</mat-icon> Comments
       </button>
-      <button mat-raised-button color="primary" class="ms-3">
-        <mat-icon>report</mat-icon> Report
+      <button
+        mat-raised-button
+        color="primary"
+        class="ms-2 me-2"
+        routerLink="/post/{{ post.postId }}"
+      >
+        <mat-icon>
+          <span class="material-symbols-outlined"> visibility </span>
+        </mat-icon>
+        View
       </button>
       <button
         *ngIf="currentUserName === post.userName"

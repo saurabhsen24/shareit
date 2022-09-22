@@ -23,10 +23,19 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { QuillModule } from 'ngx-quill';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
 import { TokenInterceptor } from './shared/interceptors/token.interceptor';
 import { CreatePostComponent } from './pages/create-post/create-post.component';
 import { CommentComponent } from './pages/comment/comment.component';
 import { CommentDialogComponent } from './pages/comment/comment-dialog/comment-dialog.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { UserComponent } from './pages/user/user.component';
+import { UploadPicComponent } from './pages/user/upload-pic/upload-pic.component';
+import { UpdateUserComponent } from './pages/user/update-user/update-user.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +50,9 @@ import { CommentDialogComponent } from './pages/comment/comment-dialog/comment-d
     CreatePostComponent,
     CommentComponent,
     CommentDialogComponent,
+    UserComponent,
+    UploadPicComponent,
+    UpdateUserComponent,
   ],
   imports: [
     BrowserModule,
@@ -57,6 +69,11 @@ import { CommentDialogComponent } from './pages/comment/comment-dialog/comment-d
     MatTabsModule,
     MatStepperModule,
     MatDialogModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
     QuillModule.forRoot(),
   ],
   providers: [

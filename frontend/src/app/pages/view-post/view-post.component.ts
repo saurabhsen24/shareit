@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { VoteType } from 'src/app/shared/constants/VoteType';
 import { Post } from 'src/app/shared/models/Post.model';
@@ -22,6 +22,11 @@ export class ViewPostComponent implements OnInit {
 
   currentUserName = '';
 
+  @Input()
+  username = '';
+
+  isLoading = false;
+
   constructor(
     private postService: PostService,
     private messageService: MessageService,
@@ -32,25 +37,62 @@ export class ViewPostComponent implements OnInit {
 
   ngOnInit() {
     this.currentUserName = this.tokenStorage.getUser()?.userName;
-    this.getAllPosts();
+    if (this.username) {
+      this.getAllPostsByUser();
+    } else {
+      this.getAllPosts();
+    }
   }
 
   getAllPosts() {
+    this.isLoading = true;
+
     this.postService.getAllPosts().subscribe(
       (postData: Post[]) => {
-        postData.map((post) => this.sharedService.changeButtonColor(post));
+        postData.map((post) => {
+          this.sharedService.changeButtonColor(post);
+          let videoUrl = this.sharedService.checkIfVideoURLOrImageURL(
+            post.postUrl
+          );
+
+          post.videoUrl = videoUrl;
+        });
         this.posts = postData;
       },
       (err: ErrorResponse) => {
         this.messageService.showMessage('error', err.message);
+      },
+      () => {
+        this.isLoading = false;
+      }
+    );
+  }
+
+  getAllPostsByUser() {
+    this.isLoading = true;
+
+    this.postService.getAllPostsByUser(this.username).subscribe(
+      (postData: Post[]) => {
+        postData.map((post) => {
+          this.sharedService.changeButtonColor(post);
+          let videoUrl = this.sharedService.checkIfVideoURLOrImageURL(
+            post.postUrl
+          );
+
+          post.videoUrl = videoUrl;
+        });
+        this.posts = postData;
+      },
+      (err: ErrorResponse) => {
+        this.messageService.showMessage('error', err.message);
+      },
+      () => {
+        this.isLoading = false;
       }
     );
   }
 
   deletePost(postId: Number) {
-    const newPosts = this.posts.filter((post) => post.postId !== postId);
-    this.posts = newPosts;
-
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -61,6 +103,10 @@ export class ViewPostComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
+        const newPosts = this.posts.filter((post) => post.postId !== postId);
+        this.posts = newPosts;
+
+        this.isLoading = true;
         const posts = this.posts.filter((post) => post.postId !== postId);
         this.posts = posts;
         this.postService.deletePost(postId).subscribe(
@@ -69,6 +115,9 @@ export class ViewPostComponent implements OnInit {
           },
           (errResponse: ErrorResponse) => {
             this.messageService.showMessage('error', errResponse.message);
+          },
+          () => {
+            this.isLoading = false;
           }
         );
       }

@@ -1,0 +1,123 @@
+<div class="container">
+  <div class="d-flex flex-row flex-wrap">
+    <div class="col-md-3">
+      <div class="d-flex justify-content-center mt-5">
+        <div class="profile-sidebar bg-white rounded mat-elevation-z3 p-3">
+          <h3 class="text-center pb-2">
+            <strong>User Intro</strong>
+          </h3>
+          <div class="d-inline-block">
+            <img
+              class="img-fluid rounded mx-auto d-block user__profilephoto"
+              [src]="userProfilePic"
+              alt="User Profile Pic"
+              width="300px"
+              height="300px"
+            />
+            <button
+              *ngIf="loggedInUser ? loggedInUser === username : false"
+              mat-mini-fab
+              color="basic"
+              class="float-end"
+              (click)="uploadProfile()"
+            >
+              <mat-icon class="text-secondary">upload</mat-icon>
+            </button>
+          </div>
+
+          <mat-list *ngIf="userData">
+            <div>
+              <mat-list-item>
+                <mat-icon class="text-secondary">email</mat-icon>
+                <span class="ps-3 small">
+                  Email <b>{{ userData.email }}</b>
+                </span>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+            </div>
+
+            <div *ngIf="userData.worksAt">
+              <mat-list-item>
+                <mat-icon class="text-secondary">work</mat-icon>
+                <span class="ps-3 small">
+                  Works At <b>{{ userData.worksAt }}</b>
+                </span>
+              </mat-list-item>
+
+              <mat-divider></mat-divider>
+            </div>
+
+            <div *ngIf="userData.college">
+              <mat-list-item>
+                <mat-icon class="text-secondary">school</mat-icon>
+                <span class="ps-3 small">
+                  Studied At Education Instituition
+                  <b>{{ userData.college }}</b>
+                </span>
+              </mat-list-item>
+
+              <mat-divider></mat-divider>
+            </div>
+
+            <div *ngIf="userData.homeTown">
+              <mat-list-item>
+                <mat-icon class="text-secondary">home</mat-icon>
+                <span class="ps-3 small">
+                  From <b>{{ userData.homeTown }}</b>
+                </span>
+              </mat-list-item>
+
+              <mat-divider></mat-divider>
+            </div>
+
+            <div *ngIf="userData.currentCity">
+              <mat-list-item>
+                <mat-icon class="text-secondary">person_pin_circle</mat-icon>
+                <span class="ps-3 small">
+                  Lives In <b>{{ userData.currentCity }}</b>
+                </span>
+              </mat-list-item>
+
+              <mat-divider></mat-divider>
+            </div>
+
+            <div *ngIf="userData.countryName">
+              <mat-list-item>
+                <mat-icon class="text-secondary">place</mat-icon>
+                <span class="ps-3 small"
+                  >Country <b>{{ userData.countryName }}</b></span
+                >
+              </mat-list-item>
+
+              <mat-divider></mat-divider>
+            </div>
+
+            <div *ngIf="userData.gender">
+              <mat-list-item>
+                <mat-icon class="text-secondary">
+                  <mat-icon>account_circle</mat-icon>
+                </mat-icon>
+                <span class="ps-3 small"
+                  >Gender <b>{{ userData.gender }}</b></span
+                >
+              </mat-list-item>
+            </div>
+          </mat-list>
+          <div class="d-flex justify-content-center mt-3">
+            <button
+              mat-raised-button
+              color="accent"
+              *ngIf="loggedInUser === username"
+              (click)="updateUser()"
+            >
+              Update Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <app-view-post [username]="username"></app-view-post>
+    </div>
+  </div>
+</div>
