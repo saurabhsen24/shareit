@@ -1,7 +1,6 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
-import { GenericResponse } from 'src/app/shared/models/response/GenericResponse.model';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserDetails } from 'src/app/shared/models/response/UserDetails.model';
 import { TokenStorageService } from 'src/app/shared/services/token-storage.service';
 import { UserService } from 'src/app/shared/services/user.service';
@@ -21,13 +20,16 @@ export class UserComponent implements OnInit {
 
   userData: UserDetails = null;
 
+  isLoading = false;
+
   loggedInUser = null;
 
   constructor(
     private route: ActivatedRoute,
     private uploadPicDialog: MatDialog,
     private userService: UserService,
-    private tokenStorage: TokenStorageService
+    private tokenStorage: TokenStorageService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -60,5 +62,10 @@ export class UserComponent implements OnInit {
           : environment.defaultUserProfile;
         this.userData = userData;
       });
+  }
+
+  updateUser() {
+    const updateUserURL = '/user/' + this.username + '/update';
+    this.router.navigateByUrl(updateUserURL);
   }
 }

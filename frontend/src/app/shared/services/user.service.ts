@@ -31,4 +31,8 @@ export class UserService {
       catchError((errResponse) => throwError(errResponse.error))
     );
   }
+
+  updateUserDetails(userReq: any) {
+    return this.http.patch(`${this.userApi}/update`, userReq);
+  }
 }
