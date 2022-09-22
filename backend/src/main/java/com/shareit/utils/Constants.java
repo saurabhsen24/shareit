@@ -9,6 +9,10 @@ public interface Constants {
 
     String[] PUBLIC_URLS = {
             "/auth/**",
-            "/post/posts"
+            "/post/posts",
+            "/upload"
     };
+
+    String MP4 = ".mp4";
+
 }

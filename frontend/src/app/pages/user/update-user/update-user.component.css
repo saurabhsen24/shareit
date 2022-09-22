@@ -1,0 +1,10 @@
+.login {
+  max-height: 900px;
+  max-width: 600px;
+}
+
+.card_header {
+  font-size: 1.2em;
+  font-weight: 700;
+  margin-top: 10px;
+}

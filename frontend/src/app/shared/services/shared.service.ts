@@ -38,6 +38,11 @@ export class SharedService {
     }
   }
 
+  checkIfVideoURLOrImageURL(url: string) {
+    if (!url) return false;
+    return url.indexOf('mp4') !== -1;
+  }
+
   vote(postId: Number, voteType: VoteType, posts: Post[]) {
     if (!this.tokenStorage.getUser()) {
       this.router.navigateByUrl('/login');

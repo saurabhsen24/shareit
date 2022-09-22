@@ -1,10 +1,7 @@
-.myBtn {
-  margin-right: 1em;
-  width: 100px;
-  font-weight: 700;
+.example-spacer {
+  flex: 1 1 auto;
 }
 
-.logo-text {
-  font-weight: 700;
-  margin-left: 0.3em;
+.btn {
+  color: #fff;
 }

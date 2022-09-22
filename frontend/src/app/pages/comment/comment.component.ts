@@ -9,6 +9,7 @@ import { ErrorResponse } from 'src/app/shared/models/response/ErrorResponse.mode
 import { GenericResponse } from 'src/app/shared/models/response/GenericResponse.model';
 import { CommentService } from 'src/app/shared/services/comment.service';
 import { TokenStorageService } from 'src/app/shared/services/token-storage.service';
+import Swal from 'sweetalert2';
 import { CommentDialogComponent } from './comment-dialog/comment-dialog.component';
 
 @Component({
@@ -37,6 +38,8 @@ export class CommentComponent implements OnInit {
 
   currentUserName = null;
 
+  isLoading = false;
+
   Toast = null;
 
   commentForm = new FormGroup({
@@ -54,6 +57,7 @@ export class CommentComponent implements OnInit {
     this.currentUserName = this.tokenStorage.getUser().userName;
     this.route.params.subscribe((param: Params) => {
       this.postId = +param['postId'];
+      this.isLoading = true;
       this.getAllComments(this.postId);
     });
   }
@@ -62,6 +66,8 @@ export class CommentComponent implements OnInit {
     let commentReq: CommentRequest = {
       text: this.commentForm.get('commentControl').value,
     };
+
+    this.isLoading = true;
 
     this.commentService.postComment(this.postId, commentReq).subscribe(
       (comment: CommentResponse) => {
@@ -83,6 +89,9 @@ export class CommentComponent implements OnInit {
           background: '#f27474',
           color: 'white',
         });
+      },
+      () => {
+        this.isLoading = false;
       }
     );
   }
@@ -100,41 +109,63 @@ export class CommentComponent implements OnInit {
           background: '#f27474',
           color: 'white',
         });
+      },
+      () => {
+        this.isLoading = false;
       }
     );
   }
 
   deleteComment(commentId: Number) {
-    const newComments = this.comments.filter(
-      (comment) => comment.commentId !== commentId
-    );
-    this.comments = newComments;
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
 
-    this.commentService.deleteComment(commentId).subscribe(
-      (res: GenericResponse) => {
-        this.notify.emit({
-          icon: 'success',
-          iconColor: 'white',
-          text: `${res.message}`,
-          background: '#a5dc86',
-          color: 'white',
-        });
-      },
-      (errorResponse: ErrorResponse) => {
-        this.notify.emit({
-          icon: 'error',
-          iconColor: 'white',
-          text: `${errorResponse.message}`,
-          background: '#f27474',
-          color: 'white',
-        });
+        this.isLoading = true;
+        const newComments = this.comments.filter(
+          (comment) => comment.commentId !== commentId
+        );
+        this.comments = newComments;
+
+        this.commentService.deleteComment(commentId).subscribe(
+          (res: GenericResponse) => {
+            this.isLoading = false;
+            this.notify.emit({
+              icon: 'success',
+              iconColor: 'white',
+              text: `${res.message}`,
+              background: '#a5dc86',
+              color: 'white',
+            });
+          },
+          (errorResponse: ErrorResponse) => {
+            this.isLoading = false;
+            this.notify.emit({
+              icon: 'error',
+              iconColor: 'white',
+              text: `${errorResponse.message}`,
+              background: '#f27474',
+              color: 'white',
+            });
+          }
+        );
       }
-    );
+    });
+
   }
 
   openEditCommentDialog(commentId: Number) {
+    this.isLoading = true;
     this.commentService.getComment(commentId).subscribe(
       (comment: CommentResponse) => {
+        this.isLoading = false;
         const dialogRef = this.commentDialog.open(CommentDialogComponent, {
           data: comment,
         });
@@ -143,6 +174,7 @@ export class CommentComponent implements OnInit {
         });
       },
       (errorResponse: ErrorResponse) => {
+        this.isLoading = false;
         this.notify.emit({
           icon: 'error',
           iconColor: 'white',
@@ -156,6 +188,7 @@ export class CommentComponent implements OnInit {
 
   updateComment(updatedComment: CommentResponse) {
     if (!updatedComment) return;
+    this.isLoading = true;
     const index = this.comments.findIndex(
       (c) => c.commentId === updatedComment.commentId
     );
@@ -163,6 +196,8 @@ export class CommentComponent implements OnInit {
     updatedComments[index] = updatedComment;
 
     this.comments = updatedComments;
+
+    this.isLoading = false;
 
     this.notify.emit({
       icon: 'success',

@@ -8,6 +8,7 @@ import com.shareit.enums.RoleType;
 import com.shareit.exception.BadRequestException;
 import com.shareit.exception.ResourceNotFoundException;
 import com.shareit.repository.UserRepository;
+import com.shareit.service.FileUploadService;
 import com.shareit.service.RoleService;
 import com.shareit.service.UserService;
 import com.shareit.utils.JwtHelper;
@@ -16,7 +17,9 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -27,9 +30,11 @@ public class UserServiceImpl implements UserService {
     private RoleService roleService;
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private FileUploadService fileUploadService;
 
     @Override
     public User getUserByUsername(String userName) {
@@ -62,18 +67,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User Not Found!"));
+    public UserDto getUserDetails( String userName ) {
+        User user = getUserByUsername(userName);
+        return UserDto.from(user);
     }
 
     @Override
     public UserDto updateUser(UserDto userDto) {
-        User user = userRepository.findByUserName(userDto.getUserName()).orElseThrow(() -> new ResourceNotFoundException("User not found!"));
-        user.setUserName(userDto.getUserName());
-        user.setEmail(userDto.getEmail());
-        user.setProfilePicUrl(userDto.getProfilePic());
 
-        userRepository.save(user);
+        String currentUser = JwtHelper.getCurrentLoggedInUsername();
+
+        userRepository.updateUserDetails(userDto.getWorksAt(), userDto.getCollege(), userDto.getHomeTown(),
+                userDto.getCurrentCity(),userDto.getCountryName(), userDto.getGender(), currentUser);
 
         return userDto;
     }
@@ -102,6 +107,23 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new BadRequestException("Old Password is wrong");
         }
+    }
+
+    @Override
+    public String uploadProfilePic(MultipartFile file) throws IOException {
+
+        String userProfileImageUrl = fileUploadService.uploadFile(file);
+        User user = getUserByUsername(JwtHelper.getCurrentLoggedInUsername());
+
+        log.debug("Uploading User profile pic {} for user {}", file.getOriginalFilename(), user.getUserName());
+
+        user.setProfilePicUrl( userProfileImageUrl );
+        userRepository.save(user);
+
+        log.debug("User profile pic uploaded successfully {}", userProfileImageUrl );
+
+        return userProfileImageUrl;
+
     }
 
 

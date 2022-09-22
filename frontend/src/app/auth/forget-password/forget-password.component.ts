@@ -1,19 +1,21 @@
-import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
-import { ErrorResponse } from "src/app/shared/models/response/ErrorResponse.model";
-import { GenericResponse } from "src/app/shared/models/response/GenericResponse.model";
-import { AuthService } from "src/app/shared/services/auth.service";
-import { MessageService } from "src/app/shared/services/message.service";
-import Swal from "sweetalert2";
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ErrorResponse } from 'src/app/shared/models/response/ErrorResponse.model';
+import { GenericResponse } from 'src/app/shared/models/response/GenericResponse.model';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { MessageService } from 'src/app/shared/services/message.service';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: "app-forget-password",
-  templateUrl: "./forget-password.component.html",
-  styleUrls: ["./forget-password.component.css"],
+  selector: 'app-forget-password',
+  templateUrl: './forget-password.component.html',
+  styleUrls: ['./forget-password.component.css'],
 })
 export class ForgetPasswordComponent implements OnInit {
   forgetPasswordForm: FormGroup;
+
+  isLoading = false;
 
   constructor(
     private authService: AuthService,
@@ -21,25 +23,32 @@ export class ForgetPasswordComponent implements OnInit {
     private router: Router
   ) {
     this.forgetPasswordForm = new FormGroup({
-      email: new FormControl("", [Validators.email, Validators.required]),
+      email: new FormControl('', [Validators.email, Validators.required]),
     });
   }
 
   ngOnInit() {}
 
   onSubmit() {
+    if (this.forgetPasswordForm.invalid) {
+      return;
+    }
+
+    this.isLoading = true;
+
     this.authService.forgetPassword(this.forgetPasswordForm.value).subscribe(
       (response: GenericResponse) => {
         console.log(response);
-        this.messageService.showMessage("success", response.message);
-        this.router.navigateByUrl("/resetPassword");
+        this.messageService.showMessage('success', response.message);
+        this.router.navigateByUrl('/resetPassword');
       },
       (err: ErrorResponse) => {
         console.log(err);
-        this.messageService.showMessage("error", err.message);
+        this.messageService.showMessage('error', err.message);
+        this.isLoading = false;
       },
       () => {
-        console.log("Done");
+        this.isLoading = false;
       }
     );
   }

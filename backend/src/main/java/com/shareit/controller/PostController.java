@@ -10,9 +10,11 @@ import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -30,10 +32,12 @@ public class PostController {
             @ApiResponse(code = 201, message = "Post created"),
             @ApiResponse(code = 401, message = "You are not authenticated")
     })
-    @PostMapping("/createPost")
+    @PostMapping(value = "/createPost", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE } )
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<GenericResponse> addPost(@RequestBody @Valid PostRequestDto postRequestDto) {
+    public ResponseEntity<GenericResponse> addPost(@RequestPart("postRequest") @Valid PostRequestDto postRequestDto,
+                                                   @RequestPart MultipartFile file) {
         log.debug("Received post creation request {}", postRequestDto.getPostTitle());
+        postRequestDto.setFile( file );
         postService.createPost(postRequestDto);
         return new ResponseEntity<>(new GenericResponse("Post successfully created"), HttpStatus.CREATED);
     }
@@ -47,6 +51,17 @@ public class PostController {
     public ResponseEntity<List<PostResponseDto>> getAllPosts() {
         log.debug("Received request to show all posts");
         return new ResponseEntity<>(postService.getAllPosts(), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Get all posts for user",response = PostResponseDto.class, responseContainer = "List")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Displays all posts"),
+            @ApiResponse(code = 401, message = "You are not authenticated")
+    })
+    @GetMapping("/posts/{userName}")
+    public ResponseEntity<List<PostResponseDto>> getAllPostsForUser(@PathVariable("userName") String userName) {
+        log.debug("Received request to show all posts for user {}", userName);
+        return new ResponseEntity<>(postService.getAllPostsByUser(userName), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Gets post", response = PostResponseDto.class)
@@ -67,10 +82,15 @@ public class PostController {
             @ApiResponse(code = 401, message = "You are not authenticated"),
             @ApiResponse(code = 403, message = "Forbidden resource")
     })
-    @PutMapping("/updatePost/{postId}")
+    @PutMapping(value = "/updatePost/{postId}", consumes = { MediaType.APPLICATION_JSON_VALUE,
+            MediaType.MULTIPART_FORM_DATA_VALUE })
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<GenericResponse> updatePost(@PathVariable("postId") Long postId,@RequestBody @Valid PostRequestDto postRequestDto){
+    public ResponseEntity<GenericResponse> updatePost( @PathVariable("postId") Long postId,
+            @RequestPart("postRequest") @Valid PostRequestDto postRequestDto, @RequestPart MultipartFile file ) {
+
         log.debug("Received request to update post {}", postId);
+
+        postRequestDto.setFile( file );
         postService.updatePost(postId, postRequestDto);
         return new ResponseEntity<>(new GenericResponse("Post updated successfully"), HttpStatus.OK);
     }
