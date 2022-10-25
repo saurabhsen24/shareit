@@ -26,7 +26,7 @@ Its a social media app created using Spring boot and Angular where people can sh
 - Java
 - Spring Boot
 - Spring Security
-- Spring REST
+- Spring Data JPA
 - MySQL
 - Maven
 
