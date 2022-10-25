@@ -1,6 +1,6 @@
 # ShareIt App
 
-Its a social media app created using Spring boot and Angular
+Its a social media app created using Spring boot and Angular where people can share pictures, memes, videos and up vote or down vote it, comment on it etc. 
 
 ## App Demo Video
 
