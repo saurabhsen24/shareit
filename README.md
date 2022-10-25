@@ -4,7 +4,7 @@ Its a social media app created using Spring boot and Angular
 
 ## App Demo Video
 
-[![Alt text](https://i9.ytimg.com/vi/hHPZYqaje-M/mq2.jpg?sqp=CLjvspkG&rs=AOn4CLBoEI5CcvQlAr5MK1yCxCUhK27spQ)](https://youtu.be/hHPZYqaje-M)
+[![Alt text](https://i9.ytimg.com/vi/hHPZYqaje-M/mq2.jpg?sqp=CIjp4JoG&rs=AOn4CLDDF_8E3zDXO2VErcyhKim0XHoc8Q)](https://youtu.be/hHPZYqaje-M)
 
 ## App Features:
 
