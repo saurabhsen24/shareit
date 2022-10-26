@@ -4,7 +4,7 @@ Its a social media app created using Spring boot and Angular where people can sh
 
 ## App Demo Video
 
-[![Alt text](https://i9.ytimg.com/vi/hHPZYqaje-M/mq2.jpg?sqp=CIjp4JoG&rs=AOn4CLDDF_8E3zDXO2VErcyhKim0XHoc8Q)](https://youtu.be/hHPZYqaje-M)
+[![App Demo Link](https://i9.ytimg.com/vi/hHPZYqaje-M/mq2.jpg?sqp=CIjp4JoG&rs=AOn4CLDDF_8E3zDXO2VErcyhKim0XHoc8Q)](https://youtu.be/hHPZYqaje-M)
 
 ## App Features:
 
